@@ -3,16 +3,15 @@ package ru.yajaneya.Spring2Geekbrains.cart.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.yajaneya.Spring2Geekbrains.api.dto.StringResponse;
-import ru.yajaneya.Spring2Geekbrains.core.dto.Cart;
-import ru.yajaneya.Spring2Geekbrains.core.services.CartService;
-import ru.yajaneya.Spring2Geekbrains.core.services.ProductsService;
+import ru.yajaneya.Spring2Geekbrains.cart.dto.Cart;
+import ru.yajaneya.Spring2Geekbrains.cart.dto.ProductDto;
+import ru.yajaneya.Spring2Geekbrains.cart.services.CartService;
 
 @RestController
 @RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
 public class CartsController {
     private final CartService cartService;
-    private final ProductsService productsService;
 
     @GetMapping("/{uuid}")
     public Cart getCart(@RequestHeader(required = false) String username, @PathVariable String uuid) {
@@ -24,9 +23,9 @@ public class CartsController {
         return new StringResponse(cartService.generateCartUuid());
     }
 
-    @GetMapping("/{uuid}/add/{productId}")
-    public void add(@RequestHeader(required = false) String username, @PathVariable String uuid, @PathVariable Long productId) {
-        cartService.addToCart(getCurrentCartUuid(username, uuid), productId);
+    @GetMapping("/{uuid}/add")
+    public void add(@RequestHeader(required = false) String username, @PathVariable String uuid, @RequestBody ProductDto product) {
+        cartService.addToCart(getCurrentCartUuid(username, uuid), product);
     }
 
     @GetMapping("/{uuid}/decrement/{productId}")

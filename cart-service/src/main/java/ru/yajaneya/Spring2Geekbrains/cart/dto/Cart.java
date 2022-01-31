@@ -1,7 +1,6 @@
 package ru.yajaneya.Spring2Geekbrains.cart.dto;
 
 import lombok.Data;
-import ru.yajaneya.Spring2Geekbrains.core.entities.Product;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -16,7 +15,7 @@ public class Cart {
         this.items = new ArrayList<>();
     }
 
-    public void add(Product product) {
+    public void add(ProductDto product) {
         if (add(product.getId())) {
             return;
         }

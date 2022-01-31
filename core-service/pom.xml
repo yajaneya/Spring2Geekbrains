@@ -30,7 +30,6 @@
             <artifactId>h2</artifactId>
             <scope>runtime</scope>
         </dependency>
-
         <dependency>
             <groupId>ru.yajaneya</groupId>
             <artifactId>api</artifactId>

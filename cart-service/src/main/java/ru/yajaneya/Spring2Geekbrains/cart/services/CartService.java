@@ -4,9 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-import ru.yajaneya.Spring2Geekbrains.api.exeptions.ResourceNotFoundException;
-import ru.yajaneya.Spring2Geekbrains.core.dto.Cart;
-import ru.yajaneya.Spring2Geekbrains.core.entities.Product;
+import ru.yajaneya.Spring2Geekbrains.cart.dto.Cart;
+import ru.yajaneya.Spring2Geekbrains.cart.dto.ProductDto;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -14,7 +13,6 @@ import java.util.function.Consumer;
 @Service
 @RequiredArgsConstructor
 public class CartService {
-    private final ProductsService productsService;
     private final RedisTemplate<String, Object> redisTemplate;
 
     @Value("${utils.cart.prefix}")
@@ -35,8 +33,7 @@ public class CartService {
         return (Cart) redisTemplate.opsForValue().get(cartKey);
     }
 
-    public void addToCart(String cartKey, Long productId) {
-        Product product = productsService.findByID(productId).orElseThrow(() -> new ResourceNotFoundException("Невозможно добавить продукт в корзину. Продукт не найдет, id: " + productId));
+    public void addToCart(String cartKey, ProductDto product) {
         execute(cartKey, c -> {
             c.add(product);
         });

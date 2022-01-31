@@ -3,7 +3,6 @@ package ru.yajaneya.Spring2Geekbrains.cart.dto;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import ru.yajaneya.Spring2Geekbrains.core.entities.Product;
 
 @Data
 @NoArgsConstructor
@@ -15,7 +14,7 @@ public class OrderItemDto {
     private int pricePerProduct;
     private int price;
 
-    public OrderItemDto(Product product) {
+    public OrderItemDto(ProductDto product) {
         this.productId = product.getId();
         this.productTitle = product.getTitle();
         this.quantity = 1;
