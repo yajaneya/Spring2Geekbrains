@@ -5,9 +5,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import ru.yajaneya.Spring2Geekbrains.api.exeptions.ResourceNotFoundException;
 import ru.yajaneya.Spring2Geekbrains.core.dto.ProductDto;
 import ru.yajaneya.Spring2Geekbrains.core.entities.Product;
-import ru.yajaneya.Spring2Geekbrains.core.exceptions.ResourceNotFoundException;
 import ru.yajaneya.Spring2Geekbrains.core.repositories.ProductsRepository;
 import ru.yajaneya.Spring2Geekbrains.core.repositories.specifications.ProductsSpecifications;
 

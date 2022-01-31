@@ -3,12 +3,11 @@ package ru.yajaneya.Spring2Geekbrains.core.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.yajaneya.Spring2Geekbrains.api.exeptions.ResourceNotFoundException;
 import ru.yajaneya.Spring2Geekbrains.core.dto.Cart;
 import ru.yajaneya.Spring2Geekbrains.core.dto.OrderDetailsDto;
 import ru.yajaneya.Spring2Geekbrains.core.entities.Order;
 import ru.yajaneya.Spring2Geekbrains.core.entities.OrderItem;
-import ru.yajaneya.Spring2Geekbrains.core.entities.User;
-import ru.yajaneya.Spring2Geekbrains.core.exceptions.ResourceNotFoundException;
 import ru.yajaneya.Spring2Geekbrains.core.repositories.OrdersRepository;
 
 import java.util.List;
@@ -22,13 +21,13 @@ public class OrderService {
     private final ProductsService productsService;
 
     @Transactional
-    public void createOrder(User user, OrderDetailsDto orderDetailsDto) {
-        String cartKey = cartService.getCartUuidFromSuffix(user.getUsername());
+    public void createOrder(String username, OrderDetailsDto orderDetailsDto) {
+        String cartKey = cartService.getCartUuidFromSuffix(username);
         Cart currentCart = cartService.getCurrentCart(cartKey);
         Order order = new Order();
         order.setAddress(orderDetailsDto.getAddress());
         order.setPhone(orderDetailsDto.getPhone());
-        order.setUser(user);
+        order.setUsername(username);
         order.setTotalPrice(currentCart.getTotalPrice());
         List<OrderItem> items = currentCart.getItems().stream()
                 .map(o -> {

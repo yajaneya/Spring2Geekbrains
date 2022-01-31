@@ -4,9 +4,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+import ru.yajaneya.Spring2Geekbrains.api.exeptions.ResourceNotFoundException;
 import ru.yajaneya.Spring2Geekbrains.core.dto.Cart;
 import ru.yajaneya.Spring2Geekbrains.core.entities.Product;
-import ru.yajaneya.Spring2Geekbrains.core.exceptions.ResourceNotFoundException;
 
 import java.util.UUID;
 import java.util.function.Consumer;
