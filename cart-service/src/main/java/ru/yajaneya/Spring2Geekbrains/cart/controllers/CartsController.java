@@ -1,4 +1,4 @@
-package ru.yajaneya.Spring2Geekbrains.core.controllers;
+package ru.yajaneya.Spring2Geekbrains.cart.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

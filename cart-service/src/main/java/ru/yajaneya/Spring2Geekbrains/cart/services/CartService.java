@@ -1,4 +1,4 @@
-package ru.yajaneya.Spring2Geekbrains.core.services;
+package ru.yajaneya.Spring2Geekbrains.cart.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

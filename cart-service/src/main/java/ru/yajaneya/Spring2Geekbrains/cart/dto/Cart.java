@@ -1,4 +1,4 @@
-package ru.yajaneya.Spring2Geekbrains.core.dto;
+package ru.yajaneya.Spring2Geekbrains.cart.dto;
 
 import lombok.Data;
 import ru.yajaneya.Spring2Geekbrains.core.entities.Product;
