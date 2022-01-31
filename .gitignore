@@ -1,0 +1,3 @@
+# Project exclude paths
+/core-service/target/
+/gateway/target/
