@@ -15,19 +15,19 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/v1/orders")
 @RequiredArgsConstructor
 public class OrdersController {
-    private final OrderService orderService;
+    private final OrdersService ordersService;
     private final OrderConverter orderConverter;
 
 
     @GetMapping
     public List<OrderDto> getCurrentUserOrders(@RequestHeader String username) {
-        return orderService.findOrdersByUsername(username).stream()
+        return ordersService.findOrdersByUsername(username).stream()
                 .map(orderConverter::entityToDto).collect(Collectors.toList());
     }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createOrder(@RequestHeader String username, @RequestBody OrderDetailsDto orderDetailsDto) {
-        orderService.createOrder(username, orderDetailsDto);
+        ordersService.createOrder(username, orderDetailsDto);
     }
 }
