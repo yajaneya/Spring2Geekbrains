@@ -1,4 +1,4 @@
-package ru.yajaneya.Spring2Geekbrains.core;
+package ru.yajaneya.Spring2Geekbrains.cart;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,10 +8,9 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import ru.yajaneya.Spring2Geekbrains.core.entities.Category;
-import ru.yajaneya.Spring2Geekbrains.core.entities.Product;
-import ru.yajaneya.Spring2Geekbrains.core.services.CartService;
-import ru.yajaneya.Spring2Geekbrains.core.services.ProductsService;
+import ru.yajaneya.Spring2Geekbrains.api.core.ProductDto;
+import ru.yajaneya.Spring2Geekbrains.cart.integretions.ProductsServiceIntegration;
+import ru.yajaneya.Spring2Geekbrains.cart.services.CartService;
 
 import java.util.Optional;
 
@@ -21,26 +20,23 @@ public class CartTest {
     private CartService cartService;
 
     @MockBean
-    private ProductsService productsService;
+    private ProductsServiceIntegration productsService;
 
     @BeforeEach
     public void initCart() {
         cartService.clearCart("test_cart");
-        Product product1 = new Product();
+        ProductDto product1 = new ProductDto();
         product1.setId(1L);
         product1.setTitle("Milk");
         product1.setPrice(50);
-        Category category = new Category();
-        category.setId(1L);
-        category.setCategoryName("Milks");
-        product1.setCategory(category);
-        Product product2 = new Product();
+        product1.setCategory("Milk");
+        ProductDto product2 = new ProductDto();
         product2.setId(2L);
         product2.setTitle("Cream");
         product2.setPrice(150);
-        product2.setCategory(category);
-        Mockito.doReturn(Optional.of(product1)).when(productsService).findByID(1L);
-        Mockito.doReturn(Optional.of(product2)).when(productsService).findByID(2L);
+        product2.setCategory("Milk");
+        Mockito.doReturn(Optional.of(product1)).when(productsService).findById(1L);
+        Mockito.doReturn(Optional.of(product2)).when(productsService).findById(2L);
     }
 
     @Test
@@ -53,8 +49,8 @@ public class CartTest {
         cartService.addToCart("test_cart", 2L);
 
         // Проверка перехода корзины в состояние добавления продукта и увеличения количества продукта
-        Mockito.verify(productsService, Mockito.times(1)).findByID(ArgumentMatchers.eq(1L));
-        Mockito.verify(productsService, Mockito.times(1)).findByID(ArgumentMatchers.eq(2L));
+        Mockito.verify(productsService, Mockito.times(1)).findById(ArgumentMatchers.eq(1L));
+        Mockito.verify(productsService, Mockito.times(1)).findById(ArgumentMatchers.eq(2L));
 
         // Проверка размещения нужного количества продуктов в корзине
         Assertions.assertEquals(2, cartService.getCurrentCart("test_cart").getItems().size());

@@ -1,4 +1,4 @@
-package ru.yajaneya.Spring2Geekbrains.core.configs;
+package ru.yajaneya.Spring2Geekbrains.cart.configs;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
