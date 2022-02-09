@@ -1,22 +1,22 @@
-package ru.yajaneya.Spring2Geekbrains.core.controllers;
+package ru.yajaneya.Spring2Geekbrains.cart.controllers;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import ru.yajaneya.Spring2Geekbrains.api.carts.CartDto;
 import ru.yajaneya.Spring2Geekbrains.api.dto.StringResponse;
-import ru.yajaneya.Spring2Geekbrains.core.dto.Cart;
-import ru.yajaneya.Spring2Geekbrains.core.services.CartService;
-import ru.yajaneya.Spring2Geekbrains.core.services.ProductsService;
+import ru.yajaneya.Spring2Geekbrains.cart.converters.CartConverter;
+import ru.yajaneya.Spring2Geekbrains.cart.services.CartService;
 
 @RestController
 @RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
 public class CartsController {
     private final CartService cartService;
-    private final ProductsService productsService;
+    private final CartConverter cartConverter;
 
     @GetMapping("/{uuid}")
-    public Cart getCart(@RequestHeader(required = false) String username, @PathVariable String uuid) {
-        return cartService.getCurrentCart(getCurrentCartUuid(username, uuid));
+    public CartDto getCart(@RequestHeader(required = false) String username, @PathVariable String uuid) {
+        return cartConverter.modelToDto(cartService.getCurrentCart(getCurrentCartUuid(username, uuid)));
     }
 
     @GetMapping("/generate")

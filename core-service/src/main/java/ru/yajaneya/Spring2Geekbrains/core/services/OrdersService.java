@@ -3,11 +3,12 @@ package ru.yajaneya.Spring2Geekbrains.core.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.yajaneya.Spring2Geekbrains.api.carts.CartDto;
+import ru.yajaneya.Spring2Geekbrains.api.core.OrderDetailsDto;
 import ru.yajaneya.Spring2Geekbrains.api.exeptions.ResourceNotFoundException;
-import ru.yajaneya.Spring2Geekbrains.core.dto.Cart;
-import ru.yajaneya.Spring2Geekbrains.core.dto.OrderDetailsDto;
 import ru.yajaneya.Spring2Geekbrains.core.entities.Order;
 import ru.yajaneya.Spring2Geekbrains.core.entities.OrderItem;
+import ru.yajaneya.Spring2Geekbrains.core.integretions.CartServiceIntegration;
 import ru.yajaneya.Spring2Geekbrains.core.repositories.OrdersRepository;
 
 import java.util.List;
@@ -17,13 +18,12 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class OrdersService {
     private final OrdersRepository ordersRepository;
-    private final CartService cartService;
+    private final CartServiceIntegration cartServiceIntegration;
     private final ProductsService productsService;
 
     @Transactional
     public void createOrder(String username, OrderDetailsDto orderDetailsDto) {
-        String cartKey = cartService.getCartUuidFromSuffix(username);
-        Cart currentCart = cartService.getCurrentCart(cartKey);
+        CartDto currentCart = cartServiceIntegration.getUserCart(username);
         Order order = new Order();
         order.setAddress(orderDetailsDto.getAddress());
         order.setPhone(orderDetailsDto.getPhone());
@@ -41,7 +41,7 @@ public class OrdersService {
                 }).collect(Collectors.toList());
         order.setItems(items);
         ordersRepository.save(order);
-        cartService.clearCart(cartKey);
+        cartServiceIntegration.clearUserCart(username);
     }
 
     public List<Order> findOrdersByUsername(String username) {

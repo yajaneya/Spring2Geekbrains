@@ -1,12 +1,11 @@
-package ru.yajaneya.Spring2Geekbrains.core;
+package ru.yajaneya.Spring2Geekbrains.cart;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
-import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ActiveProfiles;
-import ru.yajaneya.Spring2Geekbrains.core.dto.Cart;
+import ru.yajaneya.Spring2Geekbrains.cart.models.Cart;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

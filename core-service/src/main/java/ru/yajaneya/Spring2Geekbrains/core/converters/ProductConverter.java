@@ -2,8 +2,8 @@ package ru.yajaneya.Spring2Geekbrains.core.converters;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import ru.yajaneya.Spring2Geekbrains.api.core.ProductDto;
 import ru.yajaneya.Spring2Geekbrains.api.exeptions.ResourceNotFoundException;
-import ru.yajaneya.Spring2Geekbrains.core.dto.ProductDto;
 import ru.yajaneya.Spring2Geekbrains.core.entities.Product;
 import ru.yajaneya.Spring2Geekbrains.core.services.CategoriesService;
 

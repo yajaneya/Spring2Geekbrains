@@ -2,7 +2,7 @@ package ru.yajaneya.Spring2Geekbrains.core.converters;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import ru.yajaneya.Spring2Geekbrains.core.dto.OrderDto;
+import ru.yajaneya.Spring2Geekbrains.api.core.OrderDto;
 import ru.yajaneya.Spring2Geekbrains.core.entities.Order;
 
 import java.util.stream.Collectors;
@@ -23,7 +23,8 @@ public class OrderConverter {
         out.setPhone(order.getPhone());
         out.setTotalPrice(order.getTotalPrice());
         out.setUsername(order.getUsername());
-        out.setItems(order.getItems().stream().map(orderItemConverter::entityToDto).collect(Collectors.toList()));
+        out.setItems(order.getItems().stream().map(
+                orderItemConverter::entityToDto).collect(Collectors.toList()));
         return out;
     }
 }

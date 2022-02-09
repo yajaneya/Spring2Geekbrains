@@ -3,9 +3,9 @@ package ru.yajaneya.Spring2Geekbrains.core.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
+import ru.yajaneya.Spring2Geekbrains.api.core.OrderDetailsDto;
+import ru.yajaneya.Spring2Geekbrains.api.core.OrderDto;
 import ru.yajaneya.Spring2Geekbrains.core.converters.OrderConverter;
-import ru.yajaneya.Spring2Geekbrains.core.dto.OrderDetailsDto;
-import ru.yajaneya.Spring2Geekbrains.core.dto.OrderDto;
 import ru.yajaneya.Spring2Geekbrains.core.services.*;
 
 import java.util.List;
