@@ -10,6 +10,7 @@
         <module name="front-service" />
         <module name="auth-service" />
         <module name="cart-service" />
+        <module name="recom-service" />
         <module name="api" />
         <module name="core-service" />
         <module name="gateway" />
@@ -24,6 +25,7 @@
       <module name="core-service" options="-parameters" />
       <module name="front-service" options="-parameters" />
       <module name="gateway" options="-parameters" />
+      <module name="recom-service" options="-parameters" />
     </option>
   </component>
 </project>

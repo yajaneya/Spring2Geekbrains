@@ -39,6 +39,14 @@ spring:
             - StripPrefix=1
             - PrefixPath=/web-market-auth
             - JwtAuthFilter
+        - id: recom-service
+          uri: http://localhost:8187/
+          predicates:
+            - Path=/recom/**
+          filters:
+            - StripPrefix=1
+            - PrefixPath=/web-market-recom
+            - JwtAuthFilter
 
 jwt:
   secret: jldfskvhu23904et;gnuUNQ23R92R2T4T

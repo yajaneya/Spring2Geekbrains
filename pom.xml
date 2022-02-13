@@ -22,6 +22,7 @@
         <module>auth-service</module>
         <module>api</module>
         <module>cart-service</module>
+        <module>recom-service</module>
     </modules>
 
     <properties>
