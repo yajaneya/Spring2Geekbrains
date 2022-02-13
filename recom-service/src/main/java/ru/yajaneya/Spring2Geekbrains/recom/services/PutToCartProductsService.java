@@ -2,7 +2,6 @@ package ru.yajaneya.Spring2Geekbrains.recom.services;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import ru.yajaneya.Spring2Geekbrains.api.recoms.BuyProductDto;
 import ru.yajaneya.Spring2Geekbrains.api.recoms.PutToCartProductDto;
 import ru.yajaneya.Spring2Geekbrains.recom.entities.PutToCartProduct;
 import ru.yajaneya.Spring2Geekbrains.recom.repositories.PutToCartProductsRepository;

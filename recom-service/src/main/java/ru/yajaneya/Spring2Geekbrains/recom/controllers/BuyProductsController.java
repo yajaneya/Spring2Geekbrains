@@ -1,15 +1,12 @@
 package ru.yajaneya.Spring2Geekbrains.recom.controllers;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import ru.yajaneya.Spring2Geekbrains.api.core.OrderDetailsDto;
 import ru.yajaneya.Spring2Geekbrains.api.recoms.BuyProductDto;
 import ru.yajaneya.Spring2Geekbrains.recom.entities.BuyProduct;
 import ru.yajaneya.Spring2Geekbrains.recom.services.BuyProductsService;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/buyproducts")

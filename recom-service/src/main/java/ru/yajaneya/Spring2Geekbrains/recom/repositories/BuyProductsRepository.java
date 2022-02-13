@@ -3,7 +3,6 @@ package ru.yajaneya.Spring2Geekbrains.recom.repositories;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
-import ru.yajaneya.Spring2Geekbrains.api.recoms.BuyProductDto;
 import ru.yajaneya.Spring2Geekbrains.recom.entities.BuyProduct;
 
 import java.util.List;
