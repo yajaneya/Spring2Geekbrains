@@ -17,7 +17,6 @@ public class BuyProductsController {
     @GetMapping
     public List<BuyProductDto> getCurrentUserOrders() {
         List<BuyProductDto> s = buyProductsService.findAll();
-        s.forEach(q -> System.out.println(q));
         return s;
     }
 

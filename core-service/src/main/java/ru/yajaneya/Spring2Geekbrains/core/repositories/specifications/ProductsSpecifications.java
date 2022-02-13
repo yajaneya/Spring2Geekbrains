@@ -20,7 +20,6 @@ public class ProductsSpecifications {
     }
 
     public static Specification<Product> categoryEqual(String categoryNameFilter) {
-        System.out.println("Категория для фильтра: '" + categoryNameFilter + "'");
         return (root, criteriaQuery, criteriaBuilder)
                 -> criteriaBuilder.equal(root.get("category").get("categoryName"), categoryNameFilter);
     }

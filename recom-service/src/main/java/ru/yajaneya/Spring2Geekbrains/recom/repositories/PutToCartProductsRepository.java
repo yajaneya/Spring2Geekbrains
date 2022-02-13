@@ -5,10 +5,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.yajaneya.Spring2Geekbrains.recom.entities.PutToCartProduct;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
 public interface PutToCartProductsRepository extends JpaRepository <PutToCartProduct, Long> {
-    @Query("select b.productName, sum(b.productQuantity) from PutToCartProduct b group by b.productName")
-    List<String> findFive();
+    @Query("select b.productName, sum(b.productQuantity) from PutToCartProduct b where b.productDate >= ?1 group by b.productName")
+    List<String> findFive(Date date);
 }

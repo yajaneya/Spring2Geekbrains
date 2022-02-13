@@ -6,10 +6,7 @@ import ru.yajaneya.Spring2Geekbrains.api.recoms.BuyProductDto;
 import ru.yajaneya.Spring2Geekbrains.recom.entities.BuyProduct;
 import ru.yajaneya.Spring2Geekbrains.recom.repositories.BuyProductsRepository;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +18,11 @@ public class BuyProductsService {
         List<BuyProductDto> list = new ArrayList<>();
         List<BuyProductDto> list1 = new ArrayList<>();
 
-        buyProductsRepository.findFive().forEach(s -> {
+        Date nowDate = new Date();
+        Long n = nowDate.getTime() - 2592000000l;
+        Date date = new Date(n);
+
+        buyProductsRepository.findFive(date).forEach(s -> {
             String [] sm = s.split(",");
             BuyProductDto buyProductDto = new BuyProductDto();
             buyProductDto.setProductName(sm[0]);

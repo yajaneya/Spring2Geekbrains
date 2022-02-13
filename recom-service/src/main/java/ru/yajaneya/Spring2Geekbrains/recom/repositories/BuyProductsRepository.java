@@ -5,10 +5,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import ru.yajaneya.Spring2Geekbrains.recom.entities.BuyProduct;
 
+import java.util.Date;
 import java.util.List;
 
 @Repository
 public interface BuyProductsRepository extends JpaRepository <BuyProduct, Long> {
-    @Query("select b.productName, sum(b.productQuantity) from BuyProduct b group by b.productName")
-    List<String> findFive();
+    @Query("select b.productName, sum(b.productQuantity) from BuyProduct b where b.productDate > ?1 group by b.productName")
+    List<String> findFive(Date date);
 }

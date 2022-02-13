@@ -6,10 +6,7 @@ import ru.yajaneya.Spring2Geekbrains.api.recoms.PutToCartProductDto;
 import ru.yajaneya.Spring2Geekbrains.recom.entities.PutToCartProduct;
 import ru.yajaneya.Spring2Geekbrains.recom.repositories.PutToCartProductsRepository;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -21,7 +18,14 @@ public class PutToCartProductsService {
         List<PutToCartProductDto> list = new ArrayList<>();
         List<PutToCartProductDto> list1 = new ArrayList<>();
 
-        putToCartProductsRepository.findFive().forEach(s -> {
+        Date nowDate = new Date();
+        nowDate.setHours(0);
+        nowDate.setMinutes(0);
+        nowDate.setSeconds(0);
+        Long n = nowDate.getTime() - 500l;
+        Date date = new Date(n);
+
+        putToCartProductsRepository.findFive(date).forEach(s -> {
             String [] sm = s.split(",");
             PutToCartProductDto putToCartProductDto = new PutToCartProductDto();
             putToCartProductDto.setProductName(sm[0]);
