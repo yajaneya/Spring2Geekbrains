@@ -20,8 +20,7 @@ public class PutToCartProductsController {
     }
 
     @PostMapping
-    public PutToCartProduct create (@RequestBody PutToCartProduct buyProduct) {
-        buyProduct.setId(null);
-        return putToCartProductsService.save(buyProduct);
+    public void create (@RequestBody List<PutToCartProduct> putToCartProducts) {
+        putToCartProductsService.save(putToCartProducts);
     }
 }

@@ -1,8 +1,10 @@
 package ru.yajaneya.Spring2Geekbrains.recom.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.yajaneya.Spring2Geekbrains.api.recoms.PutToCartProductDto;
+import ru.yajaneya.Spring2Geekbrains.recom.entities.BuyProduct;
 import ru.yajaneya.Spring2Geekbrains.recom.entities.PutToCartProduct;
 import ru.yajaneya.Spring2Geekbrains.recom.repositories.PutToCartProductsRepository;
 
@@ -13,16 +15,17 @@ import java.util.*;
 public class PutToCartProductsService {
     private final PutToCartProductsRepository putToCartProductsRepository;
 
+    @Value("${constant.time-cart-recom}")
+    private long timeCartRecom;
+
+
     public List<PutToCartProductDto> findAll () {
 
         List<PutToCartProductDto> list = new ArrayList<>();
         List<PutToCartProductDto> list1 = new ArrayList<>();
 
         Date nowDate = new Date();
-        nowDate.setHours(0);
-        nowDate.setMinutes(0);
-        nowDate.setSeconds(0);
-        Long n = nowDate.getTime() - 500l;
+        long n = nowDate.getTime() - timeCartRecom;
         Date date = new Date(n);
 
         putToCartProductsRepository.findFive(date).forEach(s -> {
@@ -37,14 +40,16 @@ public class PutToCartProductsService {
             list1.add(l);
         });
 
+
         if (list1.size() > 5) {
-            for (int i = 5; i <list1.size(); i++) {
-                list1.remove(i);
+            list.clear();
+            for (int i = 0; i <5; i++) {
+                list.add(list1.get(i));
             }
-
+        } else {
+            return list1;
         }
-
-        return list1;
+        return list;
     }
 
 
@@ -52,7 +57,14 @@ public class PutToCartProductsService {
         return putToCartProductsRepository.findById(id);
     }
 
-    public PutToCartProduct save (PutToCartProduct putToCartProduct) {
-        return putToCartProductsRepository.save(putToCartProduct);
+    public void save (List<PutToCartProduct> putToCartProducts) {
+        putToCartProducts.forEach(b -> {
+            PutToCartProduct putToCartProduct = new PutToCartProduct();
+            putToCartProduct.setProductId(b.getProductId());
+            putToCartProduct.setProductName(b.getProductName());
+            putToCartProduct.setProductQuantity(b.getProductQuantity());
+            putToCartProduct.setProductDate(new Date());
+            putToCartProductsRepository.save(putToCartProduct);
+        });
     }
 }

@@ -3,7 +3,6 @@ package ru.yajaneya.Spring2Geekbrains.recom.controllers;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import ru.yajaneya.Spring2Geekbrains.api.recoms.BuyProductDto;
-import ru.yajaneya.Spring2Geekbrains.recom.entities.BuyProduct;
 import ru.yajaneya.Spring2Geekbrains.recom.services.BuyProductsService;
 
 import java.util.List;
@@ -16,12 +15,11 @@ public class BuyProductsController {
 
     @GetMapping
     public List<BuyProductDto> getCurrentUserOrders() {
-        List<BuyProductDto> s = buyProductsService.findAll();
-        return s;
+        return buyProductsService.findAll();
     }
 
     @PostMapping
-    public BuyProduct create (@RequestBody BuyProduct buyProduct) {
-        return buyProductsService.save(buyProduct);
+    public void create (@RequestBody List<BuyProductDto> buyProductDtos) {
+        buyProductsService.save(buyProductDtos);
     }
 }

@@ -23,7 +23,7 @@ public class BuyProduct {
     private Long id;
 
     @Column(name = "product_id")
-    private int productId;
+    private Long productId;
 
     @Column(name = "product_name")
     private String productName;

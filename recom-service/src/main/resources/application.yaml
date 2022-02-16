@@ -18,6 +18,6 @@ spring:
       enabled: true
       settings:
         web-allow-others: false
-#integrations:
-#  cart-service:
-#    url: http://localhost:5555/cart
+constant:
+  time-products-recom: 2592000000
+  time-cart-recom: 86400000

@@ -2,15 +2,25 @@ package ru.yajaneya.Spring2Geekbrains.api.recoms;
 
 public class PutToCartProductDto {
 
+    private Long productId;
     private String productName;
     private Integer productQuantity;
 
     public PutToCartProductDto() {
     }
 
-    public PutToCartProductDto(String productName, Integer productQuantity) {
+    public PutToCartProductDto(Long productId, String productName, Integer productQuantity) {
+        this.productId = productId;
         this.productName = productName;
         this.productQuantity = productQuantity;
+    }
+
+    public Long getProductId() {
+        return productId;
+    }
+
+    public void setProductId(Long productId) {
+        this.productId = productId;
     }
 
     public String getProductName() {

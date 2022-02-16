@@ -1,6 +1,7 @@
 package ru.yajaneya.Spring2Geekbrains.recom.services;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import ru.yajaneya.Spring2Geekbrains.api.recoms.BuyProductDto;
 import ru.yajaneya.Spring2Geekbrains.recom.entities.BuyProduct;
@@ -13,13 +14,16 @@ import java.util.*;
 public class BuyProductsService {
     private final BuyProductsRepository buyProductsRepository;
 
+    @Value("${constant.time-products-recom}")
+    private long timeProductRecom;
+
     public List<BuyProductDto> findAll () {
 
         List<BuyProductDto> list = new ArrayList<>();
         List<BuyProductDto> list1 = new ArrayList<>();
 
         Date nowDate = new Date();
-        Long n = nowDate.getTime() - 2592000000l;
+        long n = nowDate.getTime() - timeProductRecom;
         Date date = new Date(n);
 
         buyProductsRepository.findFive(date).forEach(s -> {
@@ -34,22 +38,31 @@ public class BuyProductsService {
             list1.add(l);
         });
 
+
         if (list1.size() > 5) {
-            for (int i = 5; i <list1.size(); i++) {
-                list1.remove(i);
+            list.clear();
+            for (int i = 0; i <5; i++) {
+                list.add(list1.get(i));
             }
-
+        } else {
+            return list1;
         }
-
-        return list1;
+        return list;
     }
 
     public Optional<BuyProduct> findByID (Long id) {
         return buyProductsRepository.findById(id);
     }
 
-    public BuyProduct save (BuyProduct buyProduct) {
-        return buyProductsRepository.save(buyProduct);
+    public void save (List<BuyProductDto> buyProductDtos) {
+        buyProductDtos.forEach(b -> {
+            BuyProduct buyProduct = new BuyProduct();
+            buyProduct.setProductId(b.getProductId());
+            buyProduct.setProductName(b.getProductName());
+            buyProduct.setProductQuantity(b.getProductQuantity());
+            buyProduct.setProductDate(new Date());
+            buyProductsRepository.save(buyProduct);
+        });
     }
 
 }
