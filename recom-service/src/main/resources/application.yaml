@@ -1,10 +1,7 @@
 server:
-  port: 8189
+  port: 8187
   servlet:
-    context-path: /web-market-core
-utils:
-  cart:
-    prefix: SPRING_WEB_
+    context-path: /web-market-recom
 spring:
   datasource:
     driver-class-name: org.h2.Driver
@@ -21,10 +18,6 @@ spring:
       enabled: true
       settings:
         web-allow-others: false
-integrations:
-  cart-service:
-    url: http://localhost:5555/cart
-  recom-service:
-    url: http://localhost:5555/recom
 constant:
-  recom-send: 600000 # интервал отправки статистики по товарам в recom-service
+  time-products-recom: 2592000000
+  time-cart-recom: 86400000

@@ -18,6 +18,9 @@ public class AppConfig {
     @Value("${integrations.cart-service.url}")
     private String cartServiceUrl;
 
+    @Value("${integrations.recom-service.url}")
+    private String recomServiceUrl;
+
     @Bean
     public WebClient cartServiceWebClient() {
         TcpClient tcpClient = TcpClient
@@ -31,6 +34,23 @@ public class AppConfig {
         return WebClient
                 .builder()
                 .baseUrl(cartServiceUrl)
+                .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
+                .build();
+    }
+
+    @Bean
+    public WebClient recomServiceWebClient() {
+        TcpClient tcpClient = TcpClient
+                .create()
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 2000)
+                .doOnConnected(connection -> {
+                    connection.addHandlerLast(new ReadTimeoutHandler(10000, TimeUnit.MILLISECONDS));
+                    connection.addHandlerLast(new WriteTimeoutHandler(2000, TimeUnit.MILLISECONDS));
+                });
+
+        return WebClient
+                .builder()
+                .baseUrl(recomServiceUrl)
                 .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
                 .build();
     }

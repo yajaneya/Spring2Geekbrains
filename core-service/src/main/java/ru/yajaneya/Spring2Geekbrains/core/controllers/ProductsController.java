@@ -39,8 +39,6 @@ public class ProductsController {
                     map(p -> productConverter.entityToDto(p)
         );
 
-        System.out.println(out);
-
         return out;
     }
 
