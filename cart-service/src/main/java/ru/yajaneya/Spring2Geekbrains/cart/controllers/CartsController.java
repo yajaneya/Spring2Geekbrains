@@ -1,9 +1,13 @@
 package ru.yajaneya.Spring2Geekbrains.cart.controllers;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yajaneya.Spring2Geekbrains.api.carts.CartDto;
 import ru.yajaneya.Spring2Geekbrains.api.dto.StringResponse;
+import ru.yajaneya.Spring2Geekbrains.api.exeptions.AppError;
+import ru.yajaneya.Spring2Geekbrains.api.exeptions.ResourceNotFoundException;
 import ru.yajaneya.Spring2Geekbrains.cart.converters.CartConverter;
 import ru.yajaneya.Spring2Geekbrains.cart.services.CartService;
 
@@ -25,8 +29,17 @@ public class CartsController {
     }
 
     @GetMapping("/{uuid}/add/{productId}")
-    public void add(@RequestHeader(required = false) String username, @PathVariable String uuid, @PathVariable Long productId) {
-        cartService.addToCart(getCurrentCartUuid(username, uuid), productId);
+    public ResponseEntity<?> add(@RequestHeader(required = false) String username, @PathVariable String uuid, @PathVariable Long productId) {
+
+        try {
+            cartService.addToCart(getCurrentCartUuid(username, uuid), productId);
+            return new ResponseEntity<> (null, HttpStatus.OK);
+        } catch (ResourceNotFoundException e) {
+            return new ResponseEntity<>(new AppError(e.getMessage(), HttpStatus.NOT_FOUND.value()),
+                    HttpStatus.NOT_FOUND);
+        }
+
+
     }
 
     @GetMapping("/{uuid}/decrement/{productId}")
