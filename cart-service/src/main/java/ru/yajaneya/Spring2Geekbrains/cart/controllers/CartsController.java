@@ -9,6 +9,7 @@ import ru.yajaneya.Spring2Geekbrains.api.dto.StringResponse;
 import ru.yajaneya.Spring2Geekbrains.api.exeptions.AppError;
 import ru.yajaneya.Spring2Geekbrains.api.exeptions.ResourceNotFoundException;
 import ru.yajaneya.Spring2Geekbrains.cart.converters.CartConverter;
+import ru.yajaneya.Spring2Geekbrains.cart.exceptions.CartIsBrokenException;
 import ru.yajaneya.Spring2Geekbrains.cart.services.CartService;
 
 @RestController
@@ -35,7 +36,7 @@ public class CartsController {
             cartService.addToCart(getCurrentCartUuid(username, uuid), productId);
             return new ResponseEntity<> (null, HttpStatus.OK);
         } catch (ResourceNotFoundException e) {
-            return new ResponseEntity<>(new AppError(e.getMessage(), HttpStatus.NOT_FOUND.value()),
+            return new ResponseEntity<>(new AppError("PRODUCT_NOT_FOUND", e.getMessage()),
                     HttpStatus.NOT_FOUND);
         }
 

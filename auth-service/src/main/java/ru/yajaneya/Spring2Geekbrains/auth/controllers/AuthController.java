@@ -45,7 +45,10 @@ public class AuthController {
                     (authRequest.getUsername(), authRequest.getPassword()));
         } catch (BadCredentialsException e) {
             return new ResponseEntity<>(new AppError
-                    ("Incorrect user or password", HttpStatus.UNAUTHORIZED.value()), HttpStatus.UNAUTHORIZED);
+                    (
+                            "AUTH_SERVICE_INCORRECT_USERNAME_OR_PASSWORD",
+                            "Incorrect username or password"
+                    ), HttpStatus.UNAUTHORIZED);
         }
         UserDetails userDetails = userService.loadUserByUsername(authRequest.getUsername());
         String token = jwtTokenUtil.generateToken(userDetails);

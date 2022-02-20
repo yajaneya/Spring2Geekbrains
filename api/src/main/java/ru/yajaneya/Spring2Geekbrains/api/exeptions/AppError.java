@@ -1,15 +1,15 @@
 package ru.yajaneya.Spring2Geekbrains.api.exeptions;
 
 public class AppError {
+    private String code;
     private String message;
-    private int statusCode;
 
-    public AppError() {
+    public String getCode() {
+        return code;
     }
 
-    public AppError(String message, int statusCode) {
-        this.message = message;
-        this.statusCode = statusCode;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getMessage() {
@@ -20,13 +20,12 @@ public class AppError {
         this.message = message;
     }
 
-    public int getStatusCode() {
-        return statusCode;
+    public AppError() {
     }
 
-    public void setStatusCode(int statusCode) {
-        this.statusCode = statusCode;
+    public AppError(String code, String message) {
+        this.code = code;
+        this.message = message;
     }
-
 
 }
