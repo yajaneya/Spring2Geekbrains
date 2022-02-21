@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 import ru.yajaneya.Spring2Geekbrains.api.core.ProductDto;
+import ru.yajaneya.Spring2Geekbrains.api.exeptions.AppError;
 import ru.yajaneya.Spring2Geekbrains.api.exeptions.ResourceNotFoundException;
 import ru.yajaneya.Spring2Geekbrains.core.converters.ProductConverter;
 import ru.yajaneya.Spring2Geekbrains.core.entities.Product;
@@ -25,7 +26,6 @@ import ru.yajaneya.Spring2Geekbrains.core.validators.ProductValidator;
 public class ProductsController {
 
     private final ProductsService productsService;
-    private final CategoriesService categoriesService;
     private final ProductConverter productConverter;
     private final ProductValidator productValidator;
 
@@ -65,7 +65,12 @@ public class ProductsController {
                     @ApiResponse(
                             description = "Успешный ответ", responseCode = "200",
                             content = @Content(schema = @Schema(implementation = ProductDto.class))
+                    ),
+                    @ApiResponse(
+                            description = "Неуспешный ответ", responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = AppError.class))
                     )
+
             }
     )
     @GetMapping("/{id}")
@@ -77,6 +82,15 @@ public class ProductsController {
         return productConverter.entityToDto(product);
     }
 
+    @Operation(
+            summary = "Запрос на создание нового продукта",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = ProductDto.class))
+                    )
+            }
+    )
     @PostMapping
     public ProductDto saveNewProduct (@RequestBody ProductDto productDto) {
         productValidator.validate(productDto);
@@ -86,6 +100,15 @@ public class ProductsController {
         return productConverter.entityToDto(product);
     }
 
+    @Operation(
+            summary = "Запрос на обновление продукта",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200",
+                            content = @Content(schema = @Schema(implementation = ProductDto.class))
+                    )
+            }
+    )
     @PutMapping
     public ProductDto updateProduct(@RequestBody ProductDto productDto) {
         productValidator.validate(productDto);
@@ -93,6 +116,14 @@ public class ProductsController {
         return productConverter.entityToDto(product);
     }
 
+    @Operation(
+            summary = "Запрос на удаление продукта",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    )
+            }
+    )
     @DeleteMapping("/{id}")
     public void delProduct (@PathVariable Long id) {
         productsService.deleteById(id);
