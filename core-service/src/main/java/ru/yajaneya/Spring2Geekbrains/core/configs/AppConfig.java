@@ -12,18 +12,25 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.tcp.TcpClient;
 import ru.yajaneya.Spring2Geekbrains.core.properties.CartServiceIntegrationProperties;
+import ru.yajaneya.Spring2Geekbrains.core.properties.CartServiceIntegrationTimeoutProperties;
 import ru.yajaneya.Spring2Geekbrains.core.properties.RecomServiceIntegrationProperties;
+import ru.yajaneya.Spring2Geekbrains.core.properties.RecomServiceIntegrationTimeoutProperties;
 
 import java.util.concurrent.TimeUnit;
 
 @Configuration
-@EnableConfigurationProperties(
-        {CartServiceIntegrationProperties.class, RecomServiceIntegrationProperties.class}
-)
+@EnableConfigurationProperties({
+        CartServiceIntegrationProperties.class,
+        CartServiceIntegrationTimeoutProperties.class,
+        RecomServiceIntegrationProperties.class,
+        RecomServiceIntegrationTimeoutProperties.class
+})
 @RequiredArgsConstructor
 public class AppConfig {
     private final CartServiceIntegrationProperties cartServiceIntegrationProperties;
+    private final CartServiceIntegrationTimeoutProperties cartServiceIntegrationTimeoutProperties;
     private final RecomServiceIntegrationProperties recomServiceIntegrationProperties;
+    private final RecomServiceIntegrationTimeoutProperties recomServiceIntegrationTimeoutProperties;
 
     @Bean
     public WebClient cartServiceWebClient() {
@@ -31,13 +38,13 @@ public class AppConfig {
                 .create()
                 .option(
                         ChannelOption.CONNECT_TIMEOUT_MILLIS,
-                        cartServiceIntegrationProperties.getConnectTimeout())
+                        cartServiceIntegrationTimeoutProperties.getConnect())
                 .doOnConnected(connection -> {
                     connection.addHandlerLast(new ReadTimeoutHandler(
-                            cartServiceIntegrationProperties.getReadTimeout(),
+                            cartServiceIntegrationTimeoutProperties.getRead(),
                             TimeUnit.MILLISECONDS));
                     connection.addHandlerLast(new WriteTimeoutHandler(
-                            cartServiceIntegrationProperties.getWriteTimeout(),
+                            cartServiceIntegrationTimeoutProperties.getWrite(),
                             TimeUnit.MILLISECONDS));
                 });
 
@@ -54,13 +61,13 @@ public class AppConfig {
                 .create()
                 .option(
                         ChannelOption.CONNECT_TIMEOUT_MILLIS,
-                        recomServiceIntegrationProperties.getConnectTimeout())
+                        recomServiceIntegrationTimeoutProperties.getConnect())
                 .doOnConnected(connection -> {
                     connection.addHandlerLast(new ReadTimeoutHandler(
-                            recomServiceIntegrationProperties.getReadTimeout(),
+                            recomServiceIntegrationTimeoutProperties.getRead(),
                             TimeUnit.MILLISECONDS));
                     connection.addHandlerLast(new WriteTimeoutHandler(
-                            recomServiceIntegrationProperties.getWriteTimeout(),
+                            recomServiceIntegrationTimeoutProperties.getWrite(),
                             TimeUnit.MILLISECONDS));
                 });
 

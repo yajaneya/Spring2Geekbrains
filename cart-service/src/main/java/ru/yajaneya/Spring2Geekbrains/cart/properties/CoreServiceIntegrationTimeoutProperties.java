@@ -6,9 +6,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 
 @ConstructorBinding
-@ConfigurationProperties(prefix = "integrations.recom-service")
+@ConfigurationProperties(prefix = "integrations.core-service.timeout")
 @Data
 @NoArgsConstructor
-public class RecomServiceIntegrationProperties {
-    private String url;
+public class CoreServiceIntegrationTimeoutProperties {
+    private Integer connect;
+    private Integer read;
+    private Integer write;
 }

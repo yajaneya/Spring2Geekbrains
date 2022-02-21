@@ -11,7 +11,4 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 @NoArgsConstructor
 public class CartServiceIntegrationProperties {
     private String url;
-    private Integer connectTimeout;
-    private Integer readTimeout;
-    private Integer writeTimeout;
 }

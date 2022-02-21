@@ -11,7 +11,4 @@ import org.springframework.boot.context.properties.ConstructorBinding;
 @NoArgsConstructor
 public class CoreServiceIntegrationProperties {
     private String url;
-    private Integer connectTimeout;
-    private Integer readTimeout;
-    private Integer writeTimeout;
 }
