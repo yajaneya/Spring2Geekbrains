@@ -12,6 +12,7 @@ public class OrderDto {
     private Long id;
     @Schema(description = "Имя пользователя", required = true, maxLength = 255, minLength = 3, example = "Vasiliy")
     private String username;
+    @Schema(description = "Список продуктов заказа", required = true)
     private List<OrderItemDto> items;
     @Schema(description = "Итоговая сумма заказа", required = true, example = "360.00")
     private BigDecimal totalPrice;
