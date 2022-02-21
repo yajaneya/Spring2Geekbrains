@@ -8,7 +8,13 @@ utils:
 integrations:
   core-service:
     url: http://localhost:5555/core
+    connect-timeout: 2000
+    read-timeout: 10000
+    write-timeout: 2000
   recom-service:
     url: http://localhost:5555/recom
+    connect-timeout: 2000
+    read-timeout: 10000
+    write-timeout: 2000
 constant:
   recom-send: 600000 # интервал отправки статистики по товарам в recom-service

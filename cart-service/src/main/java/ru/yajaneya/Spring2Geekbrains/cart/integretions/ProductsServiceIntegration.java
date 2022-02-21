@@ -1,33 +1,42 @@
 package ru.yajaneya.Spring2Geekbrains.cart.integretions;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 import ru.yajaneya.Spring2Geekbrains.api.core.ProductDto;
-import ru.yajaneya.Spring2Geekbrains.api.exeptions.ResourceNotFoundException;
+import ru.yajaneya.Spring2Geekbrains.api.exeptions.CartServiceAppError;
+import ru.yajaneya.Spring2Geekbrains.api.exeptions.CoreServiceAppError;
+import ru.yajaneya.Spring2Geekbrains.cart.exceptions.CoreServiceIntegrationException;
 
 import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
 public class ProductsServiceIntegration {
-    private final RestTemplate restTemplate;
-
-    @Value("${integrations.core-service.url}")
-    private String productServiceUrl;
+    private final WebClient coreServiceWebClient;
 
     public Optional<ProductDto> findById(Long id) {
-        try {
-            ProductDto productDto = restTemplate.getForObject(
-                    productServiceUrl + "/api/v1/products/" + id, ProductDto.class);
-            return Optional.ofNullable(productDto);
-        } catch (HttpServerErrorException e) {
-            throw new ResourceNotFoundException("Невозможно добавить продукт в корзину. Не доступен сервис продуктов.");
-        } catch (HttpClientErrorException e) {
-            throw new ResourceNotFoundException("Невозможно добавить продукт в корзину. Продукт с id = " + id + " не найден.");
-        }
+
+        ProductDto productDto = coreServiceWebClient.get()
+                .uri("/api/v1/products/" + id)
+                .retrieve()
+                .onStatus(
+                        httpStatus -> httpStatus.is4xxClientError(), // HttpStatus::is4xxClientError
+                        clientResponse -> clientResponse.bodyToMono(CartServiceAppError.class).map(
+                                body -> {
+                                    if (body.getCode().equals(CoreServiceAppError.CoreServiceErrors.PRODUCT_NOT_FOUND.name())) {
+                                        return new CoreServiceIntegrationException("Выполнен некорректный запрос к core-сервису: продукт не найден");
+                                    }
+                                    if (body.getCode().equals(CoreServiceAppError.CoreServiceErrors.CART_SERVICE_INTEGRATION_ERROR.name())) {
+                                        return new CoreServiceIntegrationException("Выполнен некорректный запрос к core-сервису: нет связи");
+                                    }
+                                    return new CoreServiceIntegrationException("Выполнен некорректный запрос к core-сервису: причина неизвестна");
+                                }
+                        )
+                )
+                .bodyToMono(ProductDto.class)
+                .block();
+        return Optional.ofNullable(productDto);
+
     }
 }
