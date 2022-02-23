@@ -6,9 +6,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 
 @ConstructorBinding
-@ConfigurationProperties(prefix = "integrations.cart-service")
+@ConfigurationProperties(prefix = "integrations.recom-service.timeout")
 @Data
 @NoArgsConstructor
-public class CartServiceIntegrationProperties {
-    private String url;
+public class RecomServiceIntegrationTimeoutProperties {
+    private Integer connect;
+    private Integer read;
+    private Integer write;
 }

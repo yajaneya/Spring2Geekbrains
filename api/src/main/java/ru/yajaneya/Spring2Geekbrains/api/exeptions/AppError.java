@@ -1,7 +1,12 @@
 package ru.yajaneya.Spring2Geekbrains.api.exeptions;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
+@Schema(description = "Ошибка в приложении")
 public class AppError {
+    @Schema(description = "Код ошибки", required = true, example = "RESOURCE_NOT_FOUND_EXCEPTION")
     private String code;
+    @Schema(description = "Сообщение об ошибке", required = true, example = "Продукт с id = 1 не найден.")
     private String message;
 
     public String getCode() {

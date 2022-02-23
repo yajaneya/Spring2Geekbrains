@@ -1,4 +1,4 @@
-package ru.yajaneya.Spring2Geekbrains.core.properties;
+package ru.yajaneya.Spring2Geekbrains.cart.properties;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -6,9 +6,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.ConstructorBinding;
 
 @ConstructorBinding
-@ConfigurationProperties(prefix = "integrations.cart-service")
+@ConfigurationProperties(prefix = "integrations.recom-service")
 @Data
 @NoArgsConstructor
-public class CartServiceIntegrationProperties {
+public class RecomServiceIntegrationProperties {
     private String url;
 }
