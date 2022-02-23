@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.yajaneya.Spring2Geekbrains.api.carts.CartDto;
 import ru.yajaneya.Spring2Geekbrains.api.dto.StringResponse;
 import ru.yajaneya.Spring2Geekbrains.api.exeptions.AppError;
-import ru.yajaneya.Spring2Geekbrains.api.exeptions.ResourceNotFoundException;
 import ru.yajaneya.Spring2Geekbrains.cart.converters.CartConverter;
+import ru.yajaneya.Spring2Geekbrains.cart.exceptions.CoreServiceIntegrationException;
 import ru.yajaneya.Spring2Geekbrains.cart.services.CartService;
 
 @RestController
@@ -71,7 +71,7 @@ public class CartsController {
         try {
             cartService.addToCart(getCurrentCartUuid(username, uuid), productId);
             return new ResponseEntity<> (null, HttpStatus.OK);
-        } catch (ResourceNotFoundException e) {
+        } catch (CoreServiceIntegrationException e) {
             return new ResponseEntity<>(new AppError("PRODUCT_NOT_FOUND", e.getMessage()),
                     HttpStatus.NOT_FOUND);
         }

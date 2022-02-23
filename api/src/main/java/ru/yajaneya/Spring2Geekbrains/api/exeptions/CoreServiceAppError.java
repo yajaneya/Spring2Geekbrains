@@ -5,6 +5,9 @@ public class CoreServiceAppError extends AppError {
         PRODUCT_NOT_FOUND, CART_SERVICE_INTEGRATION_ERROR
     }
 
+    public CoreServiceAppError() {
+    }
+
     public CoreServiceAppError(String code, String message) {
         super(code, message);
     }

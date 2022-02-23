@@ -1,8 +1,10 @@
 package ru.yajaneya.Spring2Geekbrains.cart.integretions;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 import ru.yajaneya.Spring2Geekbrains.api.core.ProductDto;
 import ru.yajaneya.Spring2Geekbrains.api.exeptions.CartServiceAppError;
 import ru.yajaneya.Spring2Geekbrains.api.exeptions.CoreServiceAppError;
@@ -34,6 +36,7 @@ public class ProductsServiceIntegration {
                                 }
                         )
                 )
+                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(new CoreServiceIntegrationException("Core-сервис сломался")))
                 .bodyToMono(ProductDto.class)
                 .block();
         return Optional.ofNullable(productDto);
