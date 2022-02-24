@@ -20,17 +20,21 @@ public class OrderDto {
     private String address;
     @Schema(description = "Телефон для связи", maxLength = 25, minLength = 10, example = "+7413-225-11-81")
     private String phone;
+    @Schema(description = "Статус заказа: CREATED, PAID, CANCELED", maxLength = 8, minLength = 4, example = "CREATED")
+    private String status;
+
 
     public OrderDto() {
     }
 
-    public OrderDto(Long id, String username, List<OrderItemDto> items, BigDecimal totalPrice, String address, String phone) {
+    public OrderDto(Long id, String username, List<OrderItemDto> items, BigDecimal totalPrice, String address, String phone, String status) {
         this.id = id;
         this.username = username;
         this.items = items;
         this.totalPrice = totalPrice;
         this.address = address;
         this.phone = phone;
+        this.status = status;
     }
 
     public Long getId() {
@@ -79,5 +83,13 @@ public class OrderDto {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

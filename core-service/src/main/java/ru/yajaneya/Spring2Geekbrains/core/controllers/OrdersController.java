@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import ru.yajaneya.Spring2Geekbrains.api.core.OrderDetailsDto;
 import ru.yajaneya.Spring2Geekbrains.api.core.OrderDto;
+import ru.yajaneya.Spring2Geekbrains.api.exeptions.AppError;
 import ru.yajaneya.Spring2Geekbrains.api.exeptions.ResourceNotFoundException;
 import ru.yajaneya.Spring2Geekbrains.core.converters.OrderConverter;
 import ru.yajaneya.Spring2Geekbrains.core.services.*;
@@ -55,6 +56,18 @@ public class OrdersController {
         ordersService.createOrder(username, orderDetailsDto);
     }
 
+    @Operation(
+            summary = "Запрос на получение заказа с указанным id",
+            responses = {
+                    @ApiResponse(
+                            description = "Успешный ответ", responseCode = "200"
+                    ),
+                    @ApiResponse(
+                            description = "Неуспешный ответ", responseCode = "404",
+                            content = @Content(schema = @Schema(implementation = AppError.class))
+                    )
+            }
+    )
     @GetMapping("/{id}")
     public OrderDto getOrderById(@PathVariable Long id) {
         return orderConverter.entityToDto(ordersService.findById(id).orElseThrow(() -> new ResourceNotFoundException("ORDER 404")));

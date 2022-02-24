@@ -35,6 +35,9 @@ public class Order {
     @Column(name = "phone")
     private  String phone;
 
+    @Column(name = "status")
+    private  String status;
+
     @CreationTimestamp
     @Column(name = "created_at")
     private LocalDateTime createdAt;
@@ -42,4 +45,10 @@ public class Order {
     @UpdateTimestamp
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;
+
+    public enum Status {
+        CREATED,
+        PAID,
+        CANCELED
+    }
 }

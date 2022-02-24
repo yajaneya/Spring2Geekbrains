@@ -61,6 +61,7 @@ public class OrdersService {
                     return item;
                 }).collect(Collectors.toList());
         order.setItems(items);
+        order.setStatus(Order.Status.CREATED.name());
         ordersRepository.save(order);
         cartServiceIntegration.clearUserCart(username);
         Date date = new Date();
