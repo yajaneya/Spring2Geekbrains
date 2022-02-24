@@ -8,5 +8,9 @@ angular.module('market-front').controller('ordersController', function ($scope, 
             });
     }
 
+    $scope.goToPay = function (orderId) {
+        $location.path('/order_pay/' + orderId);
+    }
+
     $scope.loadOrders();
 });

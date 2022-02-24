@@ -17,6 +17,7 @@ import ru.yajaneya.Spring2Geekbrains.core.repositories.OrdersRepository;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -73,5 +74,9 @@ public class OrdersService {
 
     public List<Order> findOrdersByUsername(String username) {
         return ordersRepository.findAllByUsername(username);
+    }
+
+    public Optional<Order> findById(Long id) {
+        return ordersRepository.findById(id);
     }
 }

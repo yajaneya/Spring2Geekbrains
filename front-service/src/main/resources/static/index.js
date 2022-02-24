@@ -22,7 +22,11 @@
                 templateUrl: 'orders/orders.html',
                 controller: 'ordersController'
             })
-            .otherwise({
+            .when('/order_pay/:orderId', {
+                templateUrl: 'order_pay/order_pay.html',
+                controller: 'orderPayController'
+            })
+             .otherwise({
                 redirectTo: '/'
             });
     }
