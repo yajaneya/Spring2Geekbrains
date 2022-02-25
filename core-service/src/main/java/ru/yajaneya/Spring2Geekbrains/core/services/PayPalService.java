@@ -4,7 +4,9 @@ import com.paypal.orders.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.yajaneya.Spring2Geekbrains.api.core.OrderDetailsDto;
 import ru.yajaneya.Spring2Geekbrains.api.exeptions.ResourceNotFoundException;
+import ru.yajaneya.Spring2Geekbrains.core.converters.AddressConverter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +16,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class PayPalService {
     private final OrdersService ordersService;
+    private final AddressConverter addressConverter;
 
     @Transactional
     public OrderRequest createOrderRequest(Long orderId) {
@@ -29,6 +32,10 @@ public class PayPalService {
         orderRequest.applicationContext(applicationContext);
 
         List<PurchaseUnitRequest> purchaseUnitRequests = new ArrayList<>();
+
+        AmountWithBreakdown amountWithBreakdown = new AmountWithBreakdown().currencyCode("RUB").value(String.valueOf(order.getTotalPrice()))
+                .amountBreakdown(new AmountBreakdown().itemTotal(new Money().currencyCode("RUB").value(String.valueOf(order.getTotalPrice()))));
+
         List<Item> items = order.getItems().stream()
                 .map(orderItem -> new Item()
                         .name(orderItem.getProduct().getTitle())
@@ -36,17 +43,23 @@ public class PayPalService {
                         .quantity(String.valueOf(orderItem.getQuantity())))
                 .collect(Collectors.toList());
 
-        AmountWithBreakdown awb = new AmountWithBreakdown().currencyCode("RUB").value(String.valueOf(order.getTotalPrice()))
-                .amountBreakdown(new AmountBreakdown().itemTotal(new Money().currencyCode("RUB").value(String.valueOf(order.getTotalPrice()))));
+        OrderDetailsDto address = addressConverter.StringToDto(order.getAddress());
+
+        ShippingDetail shippingDetail = new ShippingDetail().name(new Name().fullName(order.getUsername()))
+                .addressPortable(new AddressPortable()
+                        .addressLine1(address.getAddressLine1())
+                        .addressLine2(address.getAddressLine2())
+                        .adminArea2(address.getAdminArea2())
+                        .adminArea1(address.getAdminArea1())
+                        .postalCode(address.getPostalCode())
+                        .countryCode(address.getCountryCode()));
 
         PurchaseUnitRequest purchaseUnitRequest = new PurchaseUnitRequest()
                 .referenceId(orderId.toString())
                 .description("Spring Web Market Order")
-                .amountWithBreakdown(awb)
+                .amountWithBreakdown(amountWithBreakdown)
                 .items(items)
-                .shippingDetail(new ShippingDetail().name(new Name().fullName(order.getUsername()))
-                        .addressPortable(new AddressPortable().addressLine1("123 Townsend St").addressLine2("Floor 6")
-                                .adminArea2("San Francisco").adminArea1("CA").postalCode("94107").countryCode("US")));
+                .shippingDetail(shippingDetail);
         purchaseUnitRequests.add(purchaseUnitRequest);
         orderRequest.purchaseUnits(purchaseUnitRequests);
         return orderRequest;

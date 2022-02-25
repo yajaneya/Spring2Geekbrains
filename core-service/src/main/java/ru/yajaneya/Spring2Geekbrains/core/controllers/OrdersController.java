@@ -53,6 +53,7 @@ public class OrdersController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void createOrder(@RequestHeader String username, @RequestBody OrderDetailsDto orderDetailsDto) {
+        orderDetailsDto.setCountryCode("RU"); //TODO сделать список Enum стран с кодами и на базе него построить заполнение поля
         ordersService.createOrder(username, orderDetailsDto);
     }
 

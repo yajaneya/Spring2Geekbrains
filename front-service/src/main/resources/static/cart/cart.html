@@ -29,7 +29,13 @@
     <form novalidate>
         <input class="form-control" type="text" placeholder="Номер телефона получателя" ng-model="orderDetails.phone">
         <p></p>
-        <input class="form-control" type="text" placeholder="Адрес доставки" ng-model="orderDetails.address">
+        <h5>Адрес доставки</h5>
+        <input class="form-control" type="text" placeholder="Россия" readonly ng-model="orderDetails.countryCode">
+        <input class="form-control" type="text" placeholder="Почтовый индекс: " ng-model="orderDetails.postalCode">
+        <input class="form-control" type="text" placeholder="Регион (штат, республика, область, район): " ng-model="orderDetails.adminArea1">
+        <input class="form-control" type="text" placeholder="Населенный пункт: " ng-model="orderDetails.adminArea2">
+        <input class="form-control" type="text" placeholder="Улица, переулок, проспект и т.п.: " ng-model="orderDetails.addressLine1">
+        <input class="form-control" type="text" placeholder="Дом, корпус, квартира и т.п.: " ng-model="orderDetails.addressLine2">
         <p></p>
     </form>
 
