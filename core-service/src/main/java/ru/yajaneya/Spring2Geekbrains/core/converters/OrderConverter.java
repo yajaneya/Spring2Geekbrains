@@ -20,7 +20,9 @@ public class OrderConverter {
         OrderDto out = new OrderDto();
         out.setId(order.getId());
         out.setAddress(order.getAddress());
+        out.setAddressToFront(order.getAddress().replace(" // ", ", "));
         out.setPhone(order.getPhone());
+        out.setStatus(order.getStatus());
         out.setTotalPrice(order.getTotalPrice());
         out.setUsername(order.getUsername());
         out.setItems(order.getItems().stream().map(

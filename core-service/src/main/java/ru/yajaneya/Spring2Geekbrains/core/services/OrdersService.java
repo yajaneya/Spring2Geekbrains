@@ -8,6 +8,7 @@ import ru.yajaneya.Spring2Geekbrains.api.carts.CartDto;
 import ru.yajaneya.Spring2Geekbrains.api.core.OrderDetailsDto;
 import ru.yajaneya.Spring2Geekbrains.api.exeptions.ResourceNotFoundException;
 import ru.yajaneya.Spring2Geekbrains.api.recoms.BuyProductDto;
+import ru.yajaneya.Spring2Geekbrains.core.converters.AddressConverter;
 import ru.yajaneya.Spring2Geekbrains.core.entities.Order;
 import ru.yajaneya.Spring2Geekbrains.core.entities.OrderItem;
 import ru.yajaneya.Spring2Geekbrains.core.integretions.CartServiceIntegration;
@@ -29,6 +30,7 @@ public class OrdersService {
     private final CartServiceIntegration cartServiceIntegration;
     private final ProductsService productsService;
     private final RecomServiceIntegration recomServiceIntegration;
+    private final AddressConverter addressConverter;
 
     @Value("${constant.recom-send}")
     private int timePause;
@@ -41,7 +43,7 @@ public class OrdersService {
     public void createOrder(String username, OrderDetailsDto orderDetailsDto) {
         CartDto currentCart = cartServiceIntegration.getUserCart(username);
         Order order = new Order();
-        order.setAddress(orderDetailsDto.getAddress());
+        order.setAddress(addressConverter.dtoToString(orderDetailsDto));
         order.setPhone(orderDetailsDto.getPhone());
         order.setUsername(username);
         order.setTotalPrice(currentCart.getTotalPrice());
@@ -61,6 +63,7 @@ public class OrdersService {
                     return item;
                 }).collect(Collectors.toList());
         order.setItems(items);
+        order.setStatus(Order.Status.CREATED.name());
         ordersRepository.save(order);
         cartServiceIntegration.clearUserCart(username);
         Date date = new Date();

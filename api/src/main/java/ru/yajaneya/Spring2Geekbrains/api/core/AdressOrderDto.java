@@ -2,8 +2,8 @@ package ru.yajaneya.Spring2Geekbrains.api.core;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
-@Schema(description = "Данные по заказу")
-public class OrderDetailsDto {
+@Schema(description = "Модель адреса заказа")
+public class AdressOrderDto {
     @Schema(description = "Код страны", required = true, maxLength = 2, minLength = 2, example = "RU")
     private String countryCode;
 
@@ -22,22 +22,16 @@ public class OrderDetailsDto {
     @Schema(description = "Дом, корпус, квартира и т.п.", required = true, maxLength = 255, minLength = 3, example = "д. 23")
     private String addressLine2;
 
-//    @Schema(description = "Адрес доставки", maxLength = 255, minLength = 10, example = "685000, Россия, г.Магадан, ул.Пролетарская, 23")
-//    private String address;
-    @Schema(description = "Телефон для связи", maxLength = 25, minLength = 10, example = "+7413-225-11-81")
-    private String phone;
-
-    public OrderDetailsDto() {
+    public AdressOrderDto() {
     }
 
-    public OrderDetailsDto(String countryCode, String postalCode, String adminArea1, String adminArea2, String addressLine1, String addressLine2, String phone) {
+    public AdressOrderDto(String countryCode, String postalCode, String adminArea1, String adminArea2, String addressLine1, String addressLine2) {
         this.countryCode = countryCode;
         this.postalCode = postalCode;
         this.adminArea1 = adminArea1;
         this.adminArea2 = adminArea2;
         this.addressLine1 = addressLine1;
         this.addressLine2 = addressLine2;
-        this.phone = phone;
     }
 
     public String getCountryCode() {
@@ -86,13 +80,5 @@ public class OrderDetailsDto {
 
     public void setAddressLine2(String addressLine2) {
         this.addressLine2 = addressLine2;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 }

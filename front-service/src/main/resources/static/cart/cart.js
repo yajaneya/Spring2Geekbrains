@@ -22,6 +22,7 @@ angular.module('market-front').controller('cartController', function ($scope, $h
     }
 
     $scope.checkOut = function () {
+        $scope.orderDetails.countryCode = "RU";
         $http({
             url: 'http://localhost:5555/core/api/v1/orders',
             method: 'POST',
