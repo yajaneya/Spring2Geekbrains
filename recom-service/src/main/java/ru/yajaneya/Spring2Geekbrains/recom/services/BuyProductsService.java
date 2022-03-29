@@ -3,38 +3,38 @@ package ru.yajaneya.Spring2Geekbrains.recom.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.yajaneya.Spring2Geekbrains.api.recoms.BuyProductDto;
-import ru.yajaneya.Spring2Geekbrains.recom.entities.BuyProduct;
-import ru.yajaneya.Spring2Geekbrains.recom.repositories.BuyProductsRepository;
+import ru.yajaneya.Spring2Geekbrains.api.recoms.RecomProductDto;
+import ru.yajaneya.Spring2Geekbrains.recom.entities.RecomProduct;
+import ru.yajaneya.Spring2Geekbrains.recom.repositories.RecomProductsRepository;
 
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class BuyProductsService {
-    private final BuyProductsRepository buyProductsRepository;
+public class BuyProductsService implements RecomService{
+    private final RecomProductsRepository recomProductsRepository;
 
     @Value("${constant.time-products-recom}")
     private long timeProductRecom;
 
-    public List<BuyProductDto> findAll () {
+    public List<RecomProductDto> findAll () {
 
-        List<BuyProductDto> list = new ArrayList<>();
-        List<BuyProductDto> list1 = new ArrayList<>();
+        List<RecomProductDto> list = new ArrayList<>();
+        List<RecomProductDto> list1 = new ArrayList<>();
 
         Date nowDate = new Date();
         long n = nowDate.getTime() - timeProductRecom;
         Date date = new Date(n);
 
-        buyProductsRepository.findFive(date).forEach(s -> {
+        recomProductsRepository.findFive(date, "core").forEach(s -> {
             String [] sm = s.split(",");
-            BuyProductDto buyProductDto = new BuyProductDto();
-            buyProductDto.setProductName(sm[0]);
-            buyProductDto.setProductQuantity(Integer.parseUnsignedInt(sm[1]));
-            list.add(buyProductDto);
+            RecomProductDto recomProductDto = new RecomProductDto();
+            recomProductDto.setProductName(sm[0]);
+            recomProductDto.setProductQuantity(Integer.parseUnsignedInt(sm[1]));
+            list.add(recomProductDto);
         });
 
-        list.stream().sorted(Comparator.comparing(BuyProductDto::getProductQuantity).reversed()).forEach(l -> {
+        list.stream().sorted(Comparator.comparing(RecomProductDto::getProductQuantity).reversed()).forEach(l -> {
             list1.add(l);
         });
 
@@ -50,18 +50,19 @@ public class BuyProductsService {
         return list;
     }
 
-    public Optional<BuyProduct> findByID (Long id) {
-        return buyProductsRepository.findById(id);
+    public Optional<RecomProduct> findByID (Long id) {
+        return recomProductsRepository.findById(id);
     }
 
-    public void save (List<BuyProductDto> buyProductDtos) {
-        buyProductDtos.forEach(b -> {
-            BuyProduct buyProduct = new BuyProduct();
-            buyProduct.setProductId(b.getProductId());
-            buyProduct.setProductName(b.getProductName());
-            buyProduct.setProductQuantity(b.getProductQuantity());
-            buyProduct.setProductDate(new Date());
-            buyProductsRepository.save(buyProduct);
+    public void save (List<RecomProductDto> recomProductDtos) {
+        recomProductDtos.forEach(b -> {
+            RecomProduct recomProduct = new RecomProduct();
+            recomProduct.setProductId(b.getProductId());
+            recomProduct.setProductName(b.getProductName());
+            recomProduct.setProductQuantity(b.getProductQuantity());
+            recomProduct.setProductDate(new Date());
+            recomProduct.setTypeRecom("core");
+            recomProductsRepository.save(recomProduct);
         });
     }
 

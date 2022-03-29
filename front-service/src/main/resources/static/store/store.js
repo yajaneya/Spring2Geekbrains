@@ -36,14 +36,32 @@ angular.module('market-front').controller('storeController', function ($scope, $
     }
 
     $scope.loadRecoms = function () {
-        $http.get(contextPath + 'recom/api/v1/buyproducts')
-        .then(function (response) {
+        $http({
+            url: contextPath + 'recom/api/v1/recoms',
+            method: 'GET',
+            params: {
+                type: "core",
+            }
+        }).then(function (response) {
             $scope.buyProducts = response.data;
         });
-        $http.get(contextPath + 'recom/api/v1/puttocartproducts')
-        .then(function (response) {
+        $http({
+            url: contextPath + 'recom/api/v1/recoms',
+            method: 'GET',
+            params: {
+                type: "cart",
+            }
+        }).then(function (response) {
             $scope.putToCartProducts = response.data;
         });
+//        $http.get(contextPath + 'recom/api/v1/buyproducts')
+//        .then(function (response) {
+//            $scope.buyProducts = response.data;
+//        });
+//        $http.get(contextPath + 'recom/api/v1/puttocartproducts')
+//        .then(function (response) {
+//            $scope.putToCartProducts = response.data;
+//        });
     };
 
     $scope.loadProducts();

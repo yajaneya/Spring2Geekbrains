@@ -15,7 +15,6 @@ import ru.yajaneya.Spring2Geekbrains.api.exeptions.AppError;
 import ru.yajaneya.Spring2Geekbrains.api.exeptions.ResourceNotFoundException;
 import ru.yajaneya.Spring2Geekbrains.core.converters.ProductConverter;
 import ru.yajaneya.Spring2Geekbrains.core.entities.Product;
-import ru.yajaneya.Spring2Geekbrains.core.services.CategoriesService;
 import ru.yajaneya.Spring2Geekbrains.core.services.ProductsService;
 import ru.yajaneya.Spring2Geekbrains.core.validators.ProductValidator;
 

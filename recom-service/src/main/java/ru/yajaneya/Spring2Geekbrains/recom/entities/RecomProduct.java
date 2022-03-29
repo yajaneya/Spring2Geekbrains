@@ -11,10 +11,10 @@ import java.util.Date;
 
 
 @Entity
-@Table(name = "buyproducts")
+@Table(name = "recomproducts")
 @Data
 @NoArgsConstructor
-public class BuyProduct {
+public class RecomProduct {
 
 
     @Id
@@ -33,6 +33,9 @@ public class BuyProduct {
 
     @Column(name = "product_quantity")
     private int productQuantity;
+
+    @Column(name = "type_recom")
+    private String typeRecom;
 
     @CreationTimestamp
     @Column(name = "created_at")
