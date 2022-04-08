@@ -6,7 +6,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import ru.yajaneya.Spring2Geekbrains.api.core.ProductDto;
 import ru.yajaneya.Spring2Geekbrains.api.exeptions.ResourceNotFoundException;
-import ru.yajaneya.Spring2Geekbrains.api.recoms.PutToCartProductDto;
+import ru.yajaneya.Spring2Geekbrains.api.recoms.RecomProductDto;
 import ru.yajaneya.Spring2Geekbrains.cart.integretions.ProductsServiceIntegration;
 import ru.yajaneya.Spring2Geekbrains.cart.integretions.RecomServiceIntegration;
 import ru.yajaneya.Spring2Geekbrains.cart.models.Cart;
@@ -29,7 +29,7 @@ public class CartService {
 
     @Value("${constant.recom-send}")
     private int timePause;
-    private List<PutToCartProductDto> putToCartProductDtos = new ArrayList<>();
+    private List<RecomProductDto> recomProductDtos = new ArrayList<>();
     private Date saveDate = new Date();
 
 
@@ -55,24 +55,25 @@ public class CartService {
                 c.add(productDto);
             }
         });
-        for (int i=0; i<putToCartProductDtos.size(); i++) {
-            PutToCartProductDto p = putToCartProductDtos.get(i);
+        for (int i=0; i<recomProductDtos.size(); i++) {
+            RecomProductDto p = recomProductDtos.get(i);
             if (p.getProductId().equals(productDto.getId())) {
                 p.setProductQuantity(p.getProductQuantity()+1);
                 return;
             }
         }
-        PutToCartProductDto putToCartProductDto = new PutToCartProductDto();
-        putToCartProductDto.setProductId(productDto.getId());
-        putToCartProductDto.setProductName(productDto.getTitle());
-        putToCartProductDto.setProductQuantity(1);
-        putToCartProductDtos.add(putToCartProductDto);
+        RecomProductDto recomProductDto = new RecomProductDto();
+        recomProductDto.setProductId(productDto.getId());
+        recomProductDto.setProductName(productDto.getTitle());
+        recomProductDto.setProductQuantity(1);
+        recomProductDto.setType("cart");
+        recomProductDtos.add(recomProductDto);
         Date date = new Date();
         if ((date.getTime() - saveDate.getTime()) > timePause) {
             saveDate = date;
             //отправка данных в реком-сервис
-            recomServiceIntegration.sendProductCartRecom(putToCartProductDtos);
-            putToCartProductDtos.clear();
+            recomServiceIntegration.sendProductCartRecom(recomProductDtos);
+            recomProductDtos.clear();
         }
     }
 

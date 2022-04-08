@@ -19,4 +19,5 @@ integrations:
       read: 10000
       write: 2000
 constant:
-  recom-send: 600000 # интервал отправки статистики по товарам в recom-service
+  recom-send: 6 # интервал отправки статистики по товарам в recom-service
+#  recom-send: 600000 # интервал отправки статистики по товарам в recom-service

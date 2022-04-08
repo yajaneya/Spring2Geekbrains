@@ -3,10 +3,6 @@ package ru.yajaneya.Spring2Geekbrains.core.converters;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.yajaneya.Spring2Geekbrains.api.core.OrderDetailsDto;
-import ru.yajaneya.Spring2Geekbrains.api.core.OrderDto;
-import ru.yajaneya.Spring2Geekbrains.core.entities.Order;
-
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor

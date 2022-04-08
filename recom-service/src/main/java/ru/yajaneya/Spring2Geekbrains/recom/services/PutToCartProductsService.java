@@ -3,40 +3,39 @@ package ru.yajaneya.Spring2Geekbrains.recom.services;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import ru.yajaneya.Spring2Geekbrains.api.recoms.PutToCartProductDto;
-import ru.yajaneya.Spring2Geekbrains.recom.entities.BuyProduct;
-import ru.yajaneya.Spring2Geekbrains.recom.entities.PutToCartProduct;
-import ru.yajaneya.Spring2Geekbrains.recom.repositories.PutToCartProductsRepository;
+import ru.yajaneya.Spring2Geekbrains.api.recoms.RecomProductDto;
+import ru.yajaneya.Spring2Geekbrains.recom.entities.RecomProduct;
+import ru.yajaneya.Spring2Geekbrains.recom.repositories.RecomProductsRepository;
 
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
-public class PutToCartProductsService {
-    private final PutToCartProductsRepository putToCartProductsRepository;
+public class PutToCartProductsService implements RecomService{
+    private final RecomProductsRepository recomProductsRepository;
 
     @Value("${constant.time-cart-recom}")
     private long timeCartRecom;
 
 
-    public List<PutToCartProductDto> findAll () {
+    public List<RecomProductDto> findAll () {
 
-        List<PutToCartProductDto> list = new ArrayList<>();
-        List<PutToCartProductDto> list1 = new ArrayList<>();
+        List<RecomProductDto> list = new ArrayList<>();
+        List<RecomProductDto> list1 = new ArrayList<>();
 
         Date nowDate = new Date();
         long n = nowDate.getTime() - timeCartRecom;
         Date date = new Date(n);
 
-        putToCartProductsRepository.findFive(date).forEach(s -> {
+        recomProductsRepository.findFive(date, "cart").forEach(s -> {
             String [] sm = s.split(",");
-            PutToCartProductDto putToCartProductDto = new PutToCartProductDto();
-            putToCartProductDto.setProductName(sm[0]);
-            putToCartProductDto.setProductQuantity(Integer.parseUnsignedInt(sm[1]));
-            list.add(putToCartProductDto);
+            RecomProductDto recomProductDto = new RecomProductDto();
+            recomProductDto.setProductName(sm[0]);
+            recomProductDto.setProductQuantity(Integer.parseUnsignedInt(sm[1]));
+            list.add(recomProductDto);
         });
 
-        list.stream().sorted(Comparator.comparing(PutToCartProductDto::getProductQuantity).reversed()).forEach(l -> {
+        list.stream().sorted(Comparator.comparing(RecomProductDto::getProductQuantity).reversed()).forEach(l -> {
             list1.add(l);
         });
 
@@ -53,18 +52,19 @@ public class PutToCartProductsService {
     }
 
 
-    public Optional<PutToCartProduct> findByID (Long id) {
-        return putToCartProductsRepository.findById(id);
+    public Optional<RecomProduct> findByID (Long id) {
+        return recomProductsRepository.findById(id);
     }
 
-    public void save (List<PutToCartProduct> putToCartProducts) {
-        putToCartProducts.forEach(b -> {
-            PutToCartProduct putToCartProduct = new PutToCartProduct();
-            putToCartProduct.setProductId(b.getProductId());
-            putToCartProduct.setProductName(b.getProductName());
-            putToCartProduct.setProductQuantity(b.getProductQuantity());
-            putToCartProduct.setProductDate(new Date());
-            putToCartProductsRepository.save(putToCartProduct);
+    public void save (List<RecomProductDto> recomProductDtos) {
+        recomProductDtos.forEach(b -> {
+            RecomProduct recomProduct = new RecomProduct();
+            recomProduct.setProductId(b.getProductId());
+            recomProduct.setProductName(b.getProductName());
+            recomProduct.setProductQuantity(b.getProductQuantity());
+            recomProduct.setProductDate(new Date());
+            recomProduct.setTypeRecom("cart");
+            recomProductsRepository.save(recomProduct);
         });
     }
 }

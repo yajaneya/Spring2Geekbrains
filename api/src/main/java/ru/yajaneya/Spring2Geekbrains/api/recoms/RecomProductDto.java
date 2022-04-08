@@ -1,18 +1,20 @@
 package ru.yajaneya.Spring2Geekbrains.api.recoms;
 
-public class PutToCartProductDto {
+public class RecomProductDto {
 
     private Long productId;
     private String productName;
     private Integer productQuantity;
+    private String type;
 
-    public PutToCartProductDto() {
+    public RecomProductDto() {
     }
 
-    public PutToCartProductDto(Long productId, String productName, Integer productQuantity) {
+    public RecomProductDto(Long productId, String productName, Integer productQuantity, String type) {
         this.productId = productId;
         this.productName = productName;
         this.productQuantity = productQuantity;
+        this.type = type;
     }
 
     public Long getProductId() {
@@ -37,5 +39,13 @@ public class PutToCartProductDto {
 
     public void setProductQuantity(Integer productQuantity) {
         this.productQuantity = productQuantity;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
