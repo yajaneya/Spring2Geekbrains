@@ -22,6 +22,12 @@ spring:
       settings:
         web-allow-others: false
 integrations:
+  auth-service:
+    url: http://localhost:5555/auth
+    timeout:
+      connect: 2000
+      read: 10000
+      write: 2000
   cart-service:
     url: http://localhost:5555/cart
     timeout:

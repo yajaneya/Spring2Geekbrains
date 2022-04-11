@@ -36,6 +36,15 @@ public class Cart {
         return false;
     }
 
+    public void update(Long productId, String productName, BigDecimal productPrice) {
+        for (CartItem o : items) {
+            if (o.getProductId().equals(productId)) {
+                o.updateProduct(productName, productPrice);
+                return;
+            }
+        }
+    }
+
     public void decrement(Long productId) {
         Iterator<CartItem> iter = items.iterator();
         while (iter.hasNext()) {

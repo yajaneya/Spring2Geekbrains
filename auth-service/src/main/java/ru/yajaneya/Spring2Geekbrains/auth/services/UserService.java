@@ -9,6 +9,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.yajaneya.Spring2Geekbrains.api.auth.UserDto;
 import ru.yajaneya.Spring2Geekbrains.auth.entities.Role;
 import ru.yajaneya.Spring2Geekbrains.auth.entities.User;
 import ru.yajaneya.Spring2Geekbrains.auth.repositories.UserRepository;
@@ -25,6 +26,14 @@ public class UserService implements UserDetailsService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 //    private final RoleService roleService;
+
+    public List<UserDto> getUsers () {
+        List<UserDto> userDtos = new ArrayList<>();
+        userRepository.findAll().forEach(user -> {
+            userDtos.add(new UserDto(user.getUsername()));
+        });
+        return userDtos;
+    }
 
     public Optional<User> findByUsername(String username) {
         return userRepository.findByUsername(username);
