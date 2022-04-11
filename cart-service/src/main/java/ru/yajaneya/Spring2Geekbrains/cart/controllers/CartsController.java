@@ -16,6 +16,8 @@ import ru.yajaneya.Spring2Geekbrains.cart.converters.CartConverter;
 import ru.yajaneya.Spring2Geekbrains.cart.exceptions.CoreServiceIntegrationException;
 import ru.yajaneya.Spring2Geekbrains.cart.services.CartService;
 
+import java.math.BigDecimal;
+
 @RestController
 @RequestMapping("/api/v1/cart")
 @RequiredArgsConstructor
@@ -88,6 +90,13 @@ public class CartsController {
     public void decrement(@RequestHeader(required = false) String username, @PathVariable String uuid, @PathVariable Long productId) {
         cartService.decrementItem(getCurrentCartUuid(username, uuid), productId);
     }
+
+    @GetMapping("/{uuid}/update/{productId}/{productName}/{productPrice}")
+    public void update(@RequestHeader(required = false) String username, @PathVariable String uuid, @PathVariable Long productId, @PathVariable String productName, @PathVariable BigDecimal productPrice) {
+        cartService.updateNameProduct(getCurrentCartUuid(username, uuid), productId, productName, productPrice);
+    }
+
+
 
     @Operation(
             summary = "Запрос на удаление продукта из корзины",

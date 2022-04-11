@@ -5,7 +5,9 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import ru.yajaneya.Spring2Geekbrains.api.core.ProductDto;
+import ru.yajaneya.Spring2Geekbrains.core.Publisher;
 import ru.yajaneya.Spring2Geekbrains.core.entities.Product;
+import ru.yajaneya.Spring2Geekbrains.core.integretions.CartServiceIntegration;
 
 import javax.annotation.PostConstruct;
 import java.util.HashMap;
@@ -15,14 +17,16 @@ import java.util.Optional;
 @Primary
 @Service
 @RequiredArgsConstructor
-public class ProductsServiceCache implements ProductsService{
+public class ProductsServiceCache extends Publisher implements ProductsService{
     private final ProductsServiceImpl productsService;
+    private final CartServiceIntegration cartServiceIntegration;
 
     private Map<Long, Product> cache;
 
     @PostConstruct
     private void init() {
         cache = new HashMap<>();
+        attach(cartServiceIntegration);
     }
 
     @Override
@@ -57,6 +61,7 @@ public class ProductsServiceCache implements ProductsService{
             cache.put(id, product);
             System.out.println("Обновлено в кэше");
         }
+        notify(productDto);
         return product;
     }
 

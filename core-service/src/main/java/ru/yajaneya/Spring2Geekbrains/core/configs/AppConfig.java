@@ -11,15 +11,14 @@ import org.springframework.http.client.reactive.ReactorClientHttpConnector;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.netty.http.client.HttpClient;
 import reactor.netty.tcp.TcpClient;
-import ru.yajaneya.Spring2Geekbrains.core.properties.CartServiceIntegrationProperties;
-import ru.yajaneya.Spring2Geekbrains.core.properties.CartServiceIntegrationTimeoutProperties;
-import ru.yajaneya.Spring2Geekbrains.core.properties.RecomServiceIntegrationProperties;
-import ru.yajaneya.Spring2Geekbrains.core.properties.RecomServiceIntegrationTimeoutProperties;
+import ru.yajaneya.Spring2Geekbrains.core.properties.*;
 
 import java.util.concurrent.TimeUnit;
 
 @Configuration
 @EnableConfigurationProperties({
+        AuthServiceIntegrationProperties.class,
+        AuthServiceIntegrationTimeoutProperties.class,
         CartServiceIntegrationProperties.class,
         CartServiceIntegrationTimeoutProperties.class,
         RecomServiceIntegrationProperties.class,
@@ -27,11 +26,35 @@ import java.util.concurrent.TimeUnit;
 })
 @RequiredArgsConstructor
 public class AppConfig {
+    private final AuthServiceIntegrationProperties authServiceIntegrationProperties;
+    private final AuthServiceIntegrationTimeoutProperties authServiceIntegrationTimeoutProperties;
     private final CartServiceIntegrationProperties cartServiceIntegrationProperties;
     private final CartServiceIntegrationTimeoutProperties cartServiceIntegrationTimeoutProperties;
     private final RecomServiceIntegrationProperties recomServiceIntegrationProperties;
     private final RecomServiceIntegrationTimeoutProperties recomServiceIntegrationTimeoutProperties;
 
+    @Bean
+    public WebClient authServiceWebClient() {
+        TcpClient tcpClient = TcpClient
+                .create()
+                .option(
+                        ChannelOption.CONNECT_TIMEOUT_MILLIS,
+                        authServiceIntegrationTimeoutProperties.getConnect())
+                .doOnConnected(connection -> {
+                    connection.addHandlerLast(new ReadTimeoutHandler(
+                            authServiceIntegrationTimeoutProperties.getRead(),
+                            TimeUnit.MILLISECONDS));
+                    connection.addHandlerLast(new WriteTimeoutHandler(
+                            authServiceIntegrationTimeoutProperties.getWrite(),
+                            TimeUnit.MILLISECONDS));
+                });
+
+        return WebClient
+                .builder()
+                .baseUrl(authServiceIntegrationProperties.getUrl())
+                .clientConnector(new ReactorClientHttpConnector(HttpClient.from(tcpClient)))
+                .build();
+    }
     @Bean
     public WebClient cartServiceWebClient() {
         TcpClient tcpClient = TcpClient

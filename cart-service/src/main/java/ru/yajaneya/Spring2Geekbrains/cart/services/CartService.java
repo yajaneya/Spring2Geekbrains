@@ -11,6 +11,7 @@ import ru.yajaneya.Spring2Geekbrains.cart.integretions.ProductsServiceIntegratio
 import ru.yajaneya.Spring2Geekbrains.cart.integretions.RecomServiceIntegration;
 import ru.yajaneya.Spring2Geekbrains.cart.models.Cart;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -31,6 +32,10 @@ public class CartService {
     private int timePause;
     private List<RecomProductDto> recomProductDtos = new ArrayList<>();
     private Date saveDate = new Date();
+
+    public void getCarts () {
+        redisTemplate.getClientList();
+    }
 
 
     public String getCartUuidFromSuffix(String suffix) {
@@ -87,6 +92,10 @@ public class CartService {
 
     public void decrementItem(String cartKey, Long productId) {
         execute(cartKey, c -> c.decrement(productId));
+    }
+
+    public void updateNameProduct(String cartKey, Long productId, String productName, BigDecimal productPrice) {
+        execute(cartKey, c -> c.update(productId, productName, productPrice));
     }
 
     public void merge(String userCartKey, String guestCartKey) {

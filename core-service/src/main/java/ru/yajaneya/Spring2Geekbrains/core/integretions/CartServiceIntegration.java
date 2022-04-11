@@ -1,18 +1,24 @@
 package ru.yajaneya.Spring2Geekbrains.core.integretions;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 import ru.yajaneya.Spring2Geekbrains.api.carts.CartDto;
+import ru.yajaneya.Spring2Geekbrains.api.core.ProductDto;
 import ru.yajaneya.Spring2Geekbrains.api.exeptions.CartServiceAppError;
+import ru.yajaneya.Spring2Geekbrains.core.Observer;
+import ru.yajaneya.Spring2Geekbrains.core.Publisher;
 import ru.yajaneya.Spring2Geekbrains.core.exceptions.CartServiceIntegrationException;
+
+import java.math.BigDecimal;
+import java.util.LinkedHashMap;
+import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class CartServiceIntegration {
+public class CartServiceIntegration implements Observer {
     private final WebClient cartServiceWebClient;
+    private final AuthServiceIntegration authServiceIntegration;
 
     public void clearUserCart(String username) {
         cartServiceWebClient.get()
@@ -24,7 +30,7 @@ public class CartServiceIntegration {
     }
 
     public CartDto getUserCart(String username) {
-        CartDto cartDto = cartServiceWebClient.get()
+        return cartServiceWebClient.get()
                 .uri("/api/v1/cart/0")
                 .header("username", username)
                 .retrieve()
@@ -46,6 +52,28 @@ public class CartServiceIntegration {
 //                .onStatus(HttpStatus::is5xxServerError, clientResponse -> Mono.error(new CartServiceIntegrationException("Сервис корзин сломался")))
                 .bodyToMono(CartDto.class)
                 .block();
-        return cartDto;
+    }
+
+    public void updateProduct (String username, Long productId, String productName, BigDecimal productPrice) {
+        cartServiceWebClient.get()
+                .uri("/api/v1/cart/0/update/" + productId + "/" + productName + "/" + productPrice)
+                .header("username", username)
+                .retrieve()
+                .toBodilessEntity()
+                .block();
+    }
+
+    @Override
+    public void update(Publisher publisher, Object object) {
+        List users = authServiceIntegration.getUsers();
+
+        ProductDto productDto = (ProductDto) object;
+        for (Object user : users) {
+            LinkedHashMap<String, String> us = (LinkedHashMap<String, String>) user;
+            updateProduct(us.get("username"),
+                    productDto.getId(),
+                    productDto.getTitle(),
+                    productDto.getPrice());
+        }
     }
 }
