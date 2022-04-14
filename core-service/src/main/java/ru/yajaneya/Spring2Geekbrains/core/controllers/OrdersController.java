@@ -60,4 +60,10 @@ public class OrdersController {
         return orderMapper.mapDto(ordersService.findById(id).orElseThrow(() -> new ResourceNotFoundException("ORDER 404")));
     }
 
+    @GetMapping("/cache")
+    public List<String> getCache () {
+        return ordersService.getCache();
+    }
+
+
 }

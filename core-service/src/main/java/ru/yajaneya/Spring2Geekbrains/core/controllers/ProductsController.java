@@ -18,6 +18,8 @@ import ru.yajaneya.Spring2Geekbrains.core.mappers.ProductMapper;
 import ru.yajaneya.Spring2Geekbrains.core.services.ProductsService;
 import ru.yajaneya.Spring2Geekbrains.core.validators.ProductValidator;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/v1/products")
 @RequiredArgsConstructor
@@ -126,6 +128,11 @@ public class ProductsController {
     @DeleteMapping("/{id}")
     public void delProduct (@PathVariable Long id) {
         productsService.deleteById(id);
+    }
+
+    @GetMapping("/cache")
+    public List<String> getCache () {
+        return productsService.getCache();
     }
 
 }
