@@ -13,17 +13,22 @@ public class ProductDto {
     private String title;
     @Schema(description = "Цена продукта", required = true, example = "120.00")
     private BigDecimal price;
+//    private Long categoryId;
     @Schema(description = "Наименование категории продукта", required = true, maxLength = 255, minLength = 3, example = "Конфеты")
-    private String category;
+//    private String categoryName;
+    private CategoryDto categoryDto;
 
     public ProductDto() {
     }
 
-    public ProductDto(Long id, String title, BigDecimal price, String category) {
+//    public ProductDto(Long id, String title, BigDecimal price, Long CategoryId, String categoryName) {
+    public ProductDto(Long id, String title, BigDecimal price, CategoryDto categoryDto) {
         this.id = id;
         this.title = title;
         this.price = price;
-        this.category = category;
+//        this.categoryId = categoryId;
+//        this.categoryName = categoryName;
+        this.categoryDto = categoryDto;
     }
 
     public Long getId() {
@@ -50,11 +55,27 @@ public class ProductDto {
         this.price = price;
     }
 
-    public String getCategory() {
-        return category;
+    public CategoryDto getCategoryDto() {
+        return categoryDto;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
+    public void setCategoryDto(CategoryDto categoryDto) {
+        this.categoryDto = categoryDto;
     }
+
+    //    public Long getCategoryId() {
+//        return categoryId;
+//    }
+//
+//    public void setCategoryId(Long categoryId) {
+//        this.categoryId = categoryId;
+//    }
+//
+//    public String getCategoryName() {
+//        return categoryName;
+//    }
+//
+//    public void setCategoryName(String categoryName) {
+//        this.categoryName = categoryName;
+//    }
 }

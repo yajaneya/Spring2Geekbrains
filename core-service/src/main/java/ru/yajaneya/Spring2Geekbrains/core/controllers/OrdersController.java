@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.yajaneya.Spring2Geekbrains.api.core.OrderDetailsDto;
 import ru.yajaneya.Spring2Geekbrains.api.core.OrderDto;
 import ru.yajaneya.Spring2Geekbrains.api.exeptions.ResourceNotFoundException;
-import ru.yajaneya.Spring2Geekbrains.core.converters.OrderConverter;
+import ru.yajaneya.Spring2Geekbrains.core.mappers.OrderMapper;
 import ru.yajaneya.Spring2Geekbrains.core.services.*;
 
 import java.util.List;
@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 @Tag(name="Заказы", description = "Методы работы с заказами")
 public class OrdersController {
     private final OrdersService ordersService;
-    private final OrderConverter orderConverter;
+    private final OrderMapper orderMapper;
 
 
     @Operation(
@@ -38,7 +38,7 @@ public class OrdersController {
     @GetMapping
     public List<OrderDto> getCurrentUserOrders(@RequestHeader String username) {
         return ordersService.findOrdersByUsername(username).stream()
-                .map(orderConverter::entityToDto).collect(Collectors.toList());
+                .map(orderMapper::mapDto).collect(Collectors.toList());
     }
 
     @Operation(
@@ -57,7 +57,7 @@ public class OrdersController {
 
     @GetMapping("/{id}")
     public OrderDto getOrderById(@PathVariable Long id) {
-        return orderConverter.entityToDto(ordersService.findById(id).orElseThrow(() -> new ResourceNotFoundException("ORDER 404")));
+        return orderMapper.mapDto(ordersService.findById(id).orElseThrow(() -> new ResourceNotFoundException("ORDER 404")));
     }
 
 }

@@ -13,9 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import ru.yajaneya.Spring2Geekbrains.api.core.ProductDto;
 import ru.yajaneya.Spring2Geekbrains.api.exeptions.AppError;
 import ru.yajaneya.Spring2Geekbrains.api.exeptions.ResourceNotFoundException;
-import ru.yajaneya.Spring2Geekbrains.core.converters.ProductConverter;
 import ru.yajaneya.Spring2Geekbrains.core.entities.Product;
-import ru.yajaneya.Spring2Geekbrains.core.services.CategoriesService;
+import ru.yajaneya.Spring2Geekbrains.core.mappers.ProductMapper;
 import ru.yajaneya.Spring2Geekbrains.core.services.ProductsService;
 import ru.yajaneya.Spring2Geekbrains.core.validators.ProductValidator;
 
@@ -26,8 +25,8 @@ import ru.yajaneya.Spring2Geekbrains.core.validators.ProductValidator;
 public class ProductsController {
 
     private final ProductsService productsService;
-    private final ProductConverter productConverter;
     private final ProductValidator productValidator;
+    private final ProductMapper mapper;
 
     @Operation(
             summary = "Запрос на получение страницы продуктов",
@@ -53,7 +52,7 @@ public class ProductsController {
 
         Page<ProductDto> out = productsService.findAll(minPrice, maxPrice, titlePart,
                 categoryName, page).
-                    map(p -> productConverter.entityToDto(p)
+                    map(p -> mapper.mapDto(p)
         );
 
         return out;
@@ -79,7 +78,7 @@ public class ProductsController {
     ) {
         Product product = productsService.findByID(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Продукт с id = " + id + " не найден."));
-        return productConverter.entityToDto(product);
+        return mapper.mapDto(product);
     }
 
     @Operation(
@@ -94,10 +93,10 @@ public class ProductsController {
     @PostMapping
     public ProductDto saveNewProduct (@RequestBody ProductDto productDto) {
         productValidator.validate(productDto);
-        Product product = productConverter.dtoToEntity(productDto);
+        Product product = mapper.mapView(productDto);
         product.setId(null);
         product = productsService.save(product);
-        return productConverter.entityToDto(product);
+        return mapper.mapDto(product);
     }
 
     @Operation(
@@ -113,7 +112,7 @@ public class ProductsController {
     public ProductDto updateProduct(@RequestBody ProductDto productDto) {
         productValidator.validate(productDto);
         Product product = productsService.update(productDto);
-        return productConverter.entityToDto(product);
+        return mapper.mapDto(product);
     }
 
     @Operation(

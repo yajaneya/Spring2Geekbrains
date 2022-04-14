@@ -30,12 +30,12 @@ public class CartTest {
         product1.setId(1L);
         product1.setTitle("Milk");
         product1.setPrice(BigDecimal.valueOf(50.00));
-        product1.setCategory("Milk");
+//        product1.setCategoryName("Milk");
         ProductDto product2 = new ProductDto();
         product2.setId(2L);
         product2.setTitle("Cream");
         product2.setPrice(BigDecimal.valueOf(150.00));
-        product2.setCategory("Milk");
+//        product2.setCategoryName("Milk");
         Mockito.doReturn(Optional.of(product1)).when(productsService).findById(1L);
         Mockito.doReturn(Optional.of(product2)).when(productsService).findById(2L);
     }
