@@ -14,10 +14,8 @@ import ru.yajaneya.Spring2Geekbrains.core.integretions.CartServiceIntegration;
 import ru.yajaneya.Spring2Geekbrains.core.integretions.RecomServiceIntegration;
 import ru.yajaneya.Spring2Geekbrains.core.repositories.OrdersRepository;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import javax.annotation.PostConstruct;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,7 +33,12 @@ public class OrdersService {
     private List<BuyProductDto> buyProductDtos = new ArrayList<>();
     private Date saveDate = new Date();
 
+    private Map<Long, Order> cache;
 
+    @PostConstruct
+    private void init() {
+        cache = new HashMap<>();
+    }
 
     @Transactional
     public void createOrder(String username, OrderDetailsDto orderDetailsDto) {
@@ -77,6 +80,22 @@ public class OrdersService {
     }
 
     public Optional<Order> findById(Long id) {
-        return ordersRepository.findById(id);
+        if (cache.containsKey(id)) {
+            return Optional.of(cache.get(id));
+        } else {
+            Optional<Order> order = ordersRepository.findById(id);
+            cache.put(id, order.get());
+            return order;
+        }
     }
+
+    public List<String> getCache () {
+        List<String> orders = new ArrayList<>();
+        cache.forEach((k, v) -> {
+            String order = v.getId() + " -> " + v.getUsername() + " - " + v.getCreatedAt();
+            orders.add(order);
+        });
+        return orders;
+    }
+
 }
