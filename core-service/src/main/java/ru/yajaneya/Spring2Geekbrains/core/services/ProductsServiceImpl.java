@@ -20,6 +20,8 @@ public class ProductsServiceImpl implements ProductsService{
 
     private final ProductsRepository productsRepository;
 
+    private final int AMOUNT_LINES_IN_PAGE = 8; // количество строк, отображаемых на странице
+
     public Page<Product> findAll(
             Integer minPrice,
             Integer maxPrice,
@@ -45,7 +47,7 @@ public class ProductsServiceImpl implements ProductsService{
             }
         }
 
-        return productsRepository.findAll(spec, PageRequest.of(page - 1, 8));
+        return productsRepository.findAll(spec, PageRequest.of(page - 1, AMOUNT_LINES_IN_PAGE));
 
     }
 
